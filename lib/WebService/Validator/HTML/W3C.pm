@@ -109,15 +109,42 @@ validator cannot be reached), otherwise 1.
 
 =cut
 
+sub validate_file {
+    my $self = shift;
+    my $file = shift;
+
+    return $self->validator_error("You need to supply a file to validate")
+        unless $file;
+
+    return $self->_validate( { file => $file } );
+}
+
+sub validate_markup {
+    my $self = shift;
+    my $markup = shift;
+
+    return $self->validator_error("You need to supply markup to validate")
+        unless $markup;
+
+    return $self->_validate( { markup => $markup } );
+}
+
 sub validate {
     my $self = shift;
-    my $uri  = shift;
+    my $uri = shift;
 
-    return $self->validator_error("You need to supply a URI, file or scalar to validate")
+    return $self->validator_error("You need to supply a URI to validate")
       unless $uri;
 
     return $self->validator_error("You need to supply a URI scheme (e.g http)")
-      unless $uri =~ m(^.*?://) || ref $uri;
+      unless $uri =~ m(^.*?://);
+
+    return $self->_validate( $uri );
+}
+
+sub _validate {
+    my $self = shift;
+    my $uri  = shift;
 
     my $uri_orig = $uri;
 
