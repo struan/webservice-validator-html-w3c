@@ -1,4 +1,4 @@
-# $Id: W3C.pm,v 1.3 2003/11/14 16:52:05 struan Exp $
+# $Id: W3C.pm,v 1.4 2003/11/17 12:01:15 struan Exp $
 package WebService::Validator::HTML::W3C;
 
 use strict;
@@ -105,13 +105,11 @@ sub validate {
     my $uri = shift;
 
     unless ( $uri ) {
-        $self->validator_error("You need to supply a URI to validate");
-        return 0;
+        return $self->validator_error("You need to supply a URI to validate");
     }
 
     unless ( $uri =~ m(^.*?://) ) {
-        $self->validator_error("You need to supply a URI schema (e.g http)");
-        return 0;
+        return $self->validator_error("You need to supply a URI scheme (e.g http)");
     }
 
     my $uri_orig = $uri;
@@ -146,17 +144,17 @@ sub validate {
             $self->uri($uri_orig);
             return 1;
         } elsif ( !defined $valid ) {
-            $self->validator_error('Not a W3C Validator or Bad URI');
-            return 0;
+            return $self->validator_error('Not a W3C Validator or Bad URI');
         } elsif ( $valid =~ /\bvalid\b/i ) {
             $self->is_valid(1);
             $self->num_errors($valid_err_num);
             $self->uri($uri_orig);
             return 1;
         }
+
+        return $self->validator_error('Did not get a sensible result from the Validator');
     } else {
-        $self->validator_error('Could not contact validator');
-        return 0;
+        return $self->validator_error('Could not contact validator');
     }
 }
 
@@ -232,21 +230,21 @@ sub errors {
     if ($@) {
         warn "XML::XPath must be installed in order to get detailed errors";
         return undef;
-    } else {
-        my $xp = XML::XPath->new( xml => $self->_content() );
-        my @messages = $xp->findnodes('/result/messages/msg');
+    } 
 
-        foreach my $msg ( @messages ) {
-            my $err = {};
-            $err->{line}  = $msg->getAttribute('line');
-            $err->{col}  = $msg->getAttribute('col');
-            $err->{msg} = $msg->getChildNode(1)->getValue();
+    my $xp = XML::XPath->new( xml => $self->_content() );
+    my @messages = $xp->findnodes('/result/messages/msg');
 
-            push @errs, $err;
-        }
+    foreach my $msg ( @messages ) {
+        my $err = {};
+        $err->{line}  = $msg->getAttribute('line');
+        $err->{col}  = $msg->getAttribute('col');
+        $err->{msg} = $msg->getChildNode(1)->getValue();
 
-        return \@errs;
+        push @errs, $err;
     }
+
+    return \@errs;
 }
 
 =head2 validator_error
@@ -266,9 +264,9 @@ Possible values are:
 
 You didn't pass a URI to the validate method
 
-=item You need to supply a URI with a schema
+=item You need to supply a URI with a scheme
 
-The URI you passed to validate didn't have a schema on the front. The 
+The URI you passed to validate didn't have a scheme on the front. The 
 W3C validatory can't handle URIs like www.example.com but instead
 needs URIs of the form http://www.example.com/.
 
@@ -290,7 +288,13 @@ WebService::Validator::HTML::W3C could not establish a connection to the URI.
 sub validator_error {
     my $self = shift;
     my $validator_error = shift;
-    return $self->_accessor('validator_error', $validator_error);
+
+    if ( defined $validator_error ) {
+        $self->{'validator_error'} = $validator_error;
+        return 0;
+    }
+
+    return $self->{'validator_error'};
 }
 
 =head2 validator_uri

@@ -1,4 +1,4 @@
-# $Id: 04bad_validator.t,v 1.2 2003/11/11 23:15:08 struan Exp $
+# $Id: 04bad_validator.t,v 1.3 2003/11/17 12:01:17 struan Exp $
 
 use Test::More tests => 12;
 
@@ -11,9 +11,9 @@ ok($v, 'object created');
 ok(!$v->validate(), 'fails with no uri passed');
 is($v->validator_error(), 'You need to supply a URI to validate',
     'you need to supply a uri error');
-ok(!$v->validate('exo.org.uk/'), 'fails if no URI schema');
-is($v->validator_error(), 'You need to supply a URI schema (e.g http)',
-    'you need to supply a schema error');
+ok(!$v->validate('exo.org.uk/'), 'fails if no URI scheme');
+is($v->validator_error(), 'You need to supply a URI scheme (e.g http)',
+    'you need to supply a scheme error');
 is($v->validator_uri, 'http://exo.org.uk/cgi-bin/cgi-test.cgi', 
     'correct validator uri');
 
