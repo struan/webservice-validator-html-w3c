@@ -52,6 +52,15 @@ if ($@) {
     unlink $filename;
 }
 
+$filename = "t/SKIPWARN";
+eval { require Test::Warn; };
+if ($@) {
+    open( F, ">$filename" ) or die "Can't create $filename";
+    close F;
+} else {
+    unlink $filename;
+}
+
 Module::Build
     ->new(
         module_name =>  "WebService::Validator::HTML::W3C",

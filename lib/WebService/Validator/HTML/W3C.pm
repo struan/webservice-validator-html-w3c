@@ -1,4 +1,4 @@
-# $Id: W3C.pm,v 1.18 2004/05/09 13:28:02 struan Exp $
+# $Id$
 
 package WebService::Validator::HTML::W3C;
 
@@ -14,7 +14,7 @@ __PACKAGE__->mk_accessors(
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
-$VERSION       = 0.03;
+$VERSION       = 0.04;
 $VALIDATOR_URI = 'http://validator.w3.org/check';
 $HTTP_TIMEOUT  = 30;
 
@@ -193,7 +193,11 @@ Returns an array ref of WebService::Validator::HTML::W3C::Error objects.
 These have line, col and msg methods that return a line number, a column 
 in that line and the error that occurred at that point.
 
-Note that you need XML::XPath for this to work.
+Note that you need XML::XPath for this to work and you must have initialised
+WebService::Validator::HTML::W3C with the detailed option. If you have not
+set the detailed option a warning will be issued, the detailed option will
+be set and a second request made to the validator in order to fetch the
+required information. 
 
 =cut
 
@@ -201,6 +205,12 @@ sub errors {
     my $self = shift;
 
     return undef unless $self->num_errors();
+
+    unless ( $self->_http_method() eq 'GET' ) {
+        warn "You should set detailed when initalising if you intend to use the errors method";
+        $self->_http_method( 'GET' );
+        $self->validate( $self->uri() );
+    }
 
     my @errs;
 
