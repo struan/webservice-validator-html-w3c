@@ -1,4 +1,4 @@
-# $Id: W3C.pm,v 1.16 2003/11/26 14:57:39 struan Exp $
+# $Id: W3C.pm,v 1.17 2004/01/13 22:30:25 struan Exp $
 
 package WebService::Validator::HTML::W3C;
 
@@ -39,7 +39,7 @@ WebService::Validator::HTML::W3C - Access the W3Cs online HTML validator
             }
         }
     } else {
-        printf ("Failed to validate the website: %s\n", $v->validate_error);
+        printf ("Failed to validate the website: %s\n", $v->validator_error);
     }
 
 =head1 DESCRIPTION
