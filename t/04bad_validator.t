@@ -1,4 +1,4 @@
-# $Id: 04bad_validator.t,v 1.3 2003/11/17 12:01:17 struan Exp $
+# $Id$
 
 use Test::More tests => 12;
 
@@ -9,7 +9,7 @@ my $v = WebService::Validator::HTML::W3C->new( validator_uri => 'http://exo.org.
 ok($v, 'object created');
 
 ok(!$v->validate(), 'fails with no uri passed');
-is($v->validator_error(), 'You need to supply a URI to validate',
+is($v->validator_error(), 'You need to supply a URI, file or scalar to validate',
     'you need to supply a uri error');
 ok(!$v->validate('exo.org.uk/'), 'fails if no URI scheme');
 is($v->validator_error(), 'You need to supply a URI scheme (e.g http)',
