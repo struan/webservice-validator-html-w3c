@@ -1,4 +1,4 @@
-# $Id: W3C.pm,v 1.6 2003/11/17 13:17:17 struan Exp $
+# $Id: W3C.pm,v 1.7 2003/11/20 19:03:08 struan Exp $
 
 package WebService::Validator::HTML::W3C::Error;
 
@@ -71,13 +71,13 @@ WebService::Validator::HTML::W3C
     my $v = WebService::Validator::HTML::W3C->new();
 
     if ( $v->validate("http://www.example.com/") ) {
-        if ( $v->valid ) {
-            printf ("%s is a valid website\n", $v->uri);
-            } else {
-            printf ("%s is not a valid website\n", $v->uri);
+        if ( $v->is_valid ) {
+            printf ("%s is valid\n", $v->uri);
+        } else {
+            printf ("%s is not valid\n", $v->uri);
             foreach $error ( $v->errors ) {
-                printf("%s at line %n\n", $error->{description},
-                                          $error->{line_no});
+                printf("%s at line %n\n", $error->msg,
+                                          $error->line);
             }
         }
     } else {
@@ -245,11 +245,12 @@ sub num_errors {
     
     foreach my $err ( @$errors ) {
         printf("line: %s, col: %s\n\terror: %s\n", 
-                $err->{line}, $err->{col}, $err->{msg});
+                $err-line, $err->col, $err->msg);
     }
 
-Returns an array ref of hash refs containing information about each error
-encountered.
+Returns an array ref of WebService::Validator::HTML::W3C::Error objects.
+These have line, col and msg methods that return a line number, a column 
+in that line and the error that occured at that point.
 
 Note that you need XML::XPath for this to work.
 
@@ -319,6 +320,12 @@ the Validator doesn't give very useful feedback on this at the moment.
 =item Could not contact validator
 
 WebService::Validator::HTML::W3C could not establish a connection to the URI.
+
+=item Did not get a sensible result from the validator
+
+Should never happen and most likely indicates a problem somewhere but
+on the off chance that WebService::Validator::HTML::W3C is unable to make
+sense of the response from the validator you'll get this error.
 
 =back
 
