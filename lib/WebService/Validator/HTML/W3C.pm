@@ -1,11 +1,15 @@
-# $Id: W3C.pm,v 1.9 2003/11/21 15:32:37 struan Exp $
+# $Id: W3C.pm,v 1.10 2003/11/24 21:50:30 struan Exp $
 
 package WebService::Validator::HTML::W3C;
 
 use strict;
+use base qw( Class::Accessor );
 use LWP::UserAgent;
 use URI::Escape;
 use WebService::Validator::HTML::W3C::Error;
+
+__PACKAGE__->mk_accessors( qw( http_timeout validator_uri _http_method
+                               is_valid num_errors uri _content ) );
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
@@ -90,7 +94,6 @@ sub _init {
     $self->http_timeout( $args{http_timeout}   || $HTTP_TIMEOUT );
     $self->validator_uri( $args{validator_uri} || $VALIDATOR_URI );
     $self->_http_method( $args{detailed} ? 'GET' : 'HEAD' );
-    $self->_debug( $args{debug} ) if $args{debug};
 }
 
 =head2 validate
@@ -163,13 +166,6 @@ sub validate {
 
 Returns true (1) if the URI validated otherwise 0.
 
-=cut
-
-sub is_valid {
-    my $self  = shift;
-    my $valid = shift;
-    return $self->_accessor( 'valid', $valid );
-}
 
 =head2 uri
 
@@ -177,27 +173,12 @@ sub is_valid {
 
 Returns the URI of the last page on which validation suceeded.
 
-=cut
-
-sub uri {
-    my $self = shift;
-    my $uri  = shift;
-    return $self->_accessor( 'uri', $uri );
-}
 
 =head2 num_errors
 
     $num_errors = $v->num_errors();
 
 Returns the number of errors that the validator encountered.
-
-=cut
-
-sub num_errors {
-    my $self       = shift;
-    my $num_errors = shift;
-    return $self->_accessor( 'num_errors', $num_errors );
-}
 
 =head2 errors
 
@@ -233,11 +214,11 @@ sub errors {
     my @messages = $xp->findnodes('/result/messages/msg');
 
     foreach my $msg (@messages) {
-        my $err = WebService::Validator::HTML::W3C::Error->new(
+        my $err = WebService::Validator::HTML::W3C::Error->new({
                                        line => $msg->getAttribute('line'),
                                        col  => $msg->getAttribute('col'),
                                        msg => $msg->getChildNode(1)->getValue(),
-                                       );
+                                   });
 
         push @errs, $err;
     }
@@ -309,13 +290,6 @@ sub validator_error {
 Returns or sets the URI of the validator to use. Please note that you need
 to use the full path to the validator cgi.
 
-=cut
-
-sub validator_uri {
-    my $self          = shift;
-    my $validator_uri = shift;
-    return $self->_accessor( 'validator_uri', $validator_uri );
-}
 
 =head2 http_timeout
 
@@ -325,12 +299,6 @@ sub validator_uri {
 Returns or sets the timeout for the HTTP request.
 
 =cut
-
-sub http_timeout {
-    my $self         = shift;
-    my $http_timeout = shift;
-    return $self->_accessor( 'http_timeout', $http_timeout );
-}
 
 sub _construct_uri {
     my $self            = shift;
@@ -351,35 +319,6 @@ sub _parse_validator_response {
     my $valid_err_num = $response->header('X-W3C-Validator-Errors');
 
     return ( $valid, $valid_err_num );
-}
-
-sub _http_method {
-    my $self        = shift;
-    my $http_method = shift;
-    return $self->_accessor( '_http_method', $http_method );
-}
-
-sub _content {
-    my $self    = shift;
-    my $content = shift;
-    return $self->_accessor( 'content', $content );
-}
-
-sub _debug {
-    my $self        = shift;
-    my $debug_level = shift;
-    return $self->_accessor( '_debug_level', $debug_level );
-}
-
-sub _accessor {
-    my $self = shift;
-    my ( $option, $value ) = @_;
-
-    if ( defined $value ) {
-        $self->{$option} = $value;
-    }
-
-    return $self->{$option};
 }
 1;
 
