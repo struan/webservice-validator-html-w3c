@@ -1,3 +1,6 @@
+0.06 Tuesday 16th November 2004
+    - Can now validate scalars and local files
+
 0.05 Tuesday 9th November 2004
     - Actually document the detailed option :(
     - Fix a few bugs in the SYNOPSIS code
