@@ -1,4 +1,4 @@
-# $Id: W3C.pm,v 1.13 2003/11/25 16:43:23 struan Exp $
+# $Id: W3C.pm,v 1.14 2003/11/25 17:28:45 struan Exp $
 
 package WebService::Validator::HTML::W3C;
 
@@ -20,7 +20,7 @@ $HTTP_TIMEOUT  = 30;
 
 =head1 NAME
 
-WebService::Validator::HTML::W3C
+WebService::Validator::HTML::W3C - Access the W3Cs online HTML validator
 
 =head1 SYNOPSIS
 
@@ -56,8 +56,6 @@ the validated document they occur.
     my $v = WebService::Validator::HTML::W3C->new();
 
 Returns a new instance of the WebService::Validator::HTML::W3C object. 
-
-=head2 options
 
 There are various options that can be set when creating the Validator 
 object like so:
@@ -331,13 +329,13 @@ __END__
 =head1 OTHER MODULES
 
 Please note that there is also an official W3C module that is part of the
-W3C::LogValidator distribution. However that module is not very useful outside
+L<W3C::LogValidator> distribution. However that module is not very useful outside
 the constraints of that package. WebService::Validator::HTML::W3C is meant as a more general way to access the W3C Validator.
 
-HTML::Validator uses nsgmls to validate against
+L<HTML::Validator> uses nsgmls to validate against
 the W3Cs DTDs. You have to fetch the relevant DTDs and so on.
 
-There is also the HTML::Parser based HTML::Lint which mostly checks for 
+There is also the L<HTML::Parser> based L<HTML::Lint> which mostly checks for 
 known tags rather than XML/HTML validity.
 
 =head1 IMPORTANT
@@ -352,11 +350,12 @@ it is available via apt-get.
 
 =head1 BUGS
 
-While the interface to the Validator seems to be fairly stable it may be 
+While the interface to the Validator is fairly stable it may be 
 updated. I will endeavour to track any changes with this module so please
-check on CPAN for new versions. Also note that this module is only 
-guaranteed to work with the currently stable version of the validator. It
-will most likely work with any Beta versions but don't rely on it.
+check on CPAN for new versions if you find things break. Also note that this 
+module is only guaranteed to work with the currently stable version of the 
+validator. It will most likely work with any Beta versions but don't rely 
+on it.
 
 If in doubt please try and run the test suite before reporting bugs. 
 
@@ -369,9 +368,9 @@ author email or via http://rt.cpan.org/.
 
 =head1 AUTHOR
 
-	Struan Donald
-	struan@cpan.org
-	http://www.exo.org.uk/code/
+Struan Donald E<lt>struan@cpan.orgE<gt>
+
+L<http://www.exo.org.uk/code/>
 
 =head1 COPYRIGHT
 
