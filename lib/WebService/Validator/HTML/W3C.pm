@@ -1,4 +1,4 @@
-# $Id: W3C.pm,v 1.4 2003/11/17 12:01:15 struan Exp $
+# $Id: W3C.pm,v 1.5 2003/11/17 12:05:17 struan Exp $
 package WebService::Validator::HTML::W3C;
 
 use strict;
@@ -113,13 +113,7 @@ sub validate {
     }
 
     my $uri_orig = $uri;
-    # creating the HTTP query string with all parameters
-    my $req_uri = join('', 
-                        "?uri=",
-                        uri_escape($uri),
-                        ";output=xml"
-                    );
-    $req_uri= $self->validator_uri . $req_uri;
+    my $req_uri = $self->_construct_uri($uri);
 
     my $method = $self->_http_method();
     my $ua = LWP::UserAgent->new( timeout => $self->http_timeout );
@@ -326,6 +320,20 @@ sub http_timeout {
     my $self = shift;
     my $http_timeout = shift;
     return $self->_accessor('http_timeout', $http_timeout);
+}
+
+sub _construct_uri {
+    my $self = shift;
+    my $uri_to_validate = shift;
+    
+    # creating the HTTP query string with all parameters
+    my $req_uri = join('', 
+                        "?uri=",
+                        uri_escape($uri_to_validate),
+                        ";output=xml"
+                    );
+
+    return $self->validator_uri . $req_uri;
 }
 
 sub _http_method {
