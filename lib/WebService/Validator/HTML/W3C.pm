@@ -15,7 +15,7 @@ __PACKAGE__->mk_accessors(
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
-$VERSION       = 0.05;
+$VERSION       = 0.06;
 $VALIDATOR_URI = 'http://validator.w3.org/check';
 $HTTP_TIMEOUT  = 30;
 
@@ -106,6 +106,18 @@ sub _init {
 
 Validate a URI. Returns 0 if the validation fails (e.g if the 
 validator cannot be reached), otherwise 1.
+
+=head2 validate_file
+
+    $v->validate_file( './file.html' );
+
+Validate a file by uploading it to the W3C Validator. NB This has only been tested on a Linux box so may not work on non unix machines.
+
+=head2 validate_markup
+
+    $v->validate_markup( $markup );
+
+Validate a scalar containing HTML. 
 
 =cut
 
