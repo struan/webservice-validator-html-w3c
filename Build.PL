@@ -49,6 +49,7 @@ Module::Build
         module_name =>  "WebService::Validator::HTML::W3C",
         license     =>  'perl',
         requires    =>  {
+                            'Class::Accessor'   =>  0,
                             'LWP' =>  '0',
                         },
         build_requires  =>  {

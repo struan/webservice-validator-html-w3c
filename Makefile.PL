@@ -48,6 +48,7 @@ WriteMakefile
    'VERSION' => '0.10',
    'PL_FILES' => {},
    'PREREQ_PM' => {
+        'Class::Accessor' => 0,
         'LWP' => '0',
         'Test::More' => '0',
 
