@@ -43,6 +43,16 @@ EOT
     unlink $filename;
 }
 
+
+$filename = "t/SKIPWITHOUT";
+eval { require Test::Without::Module; };
+if ($@) {
+    open( F, ">$filename" ) or die "Can't create $filename";
+    close F;
+} else {
+    unlink $filename;
+}
+
 WriteMakefile
   ('DISTNAME' => 'WebService-Validator-HTML-W3C',
    'VERSION' => '0.10',
