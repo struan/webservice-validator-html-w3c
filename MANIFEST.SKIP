@@ -1,0 +1,9 @@
+^_build
+^Webservice-Validator-HTML-W3C-.*
+^Build$
+^blib
+~$
+\.bak$
+^MANIFEST\.SKIP$
+^output.xml
+CVS
