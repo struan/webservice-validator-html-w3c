@@ -1,4 +1,4 @@
-# $Id: W3C.pm,v 1.12 2003/11/25 16:40:27 struan Exp $
+# $Id: W3C.pm,v 1.13 2003/11/25 16:43:23 struan Exp $
 
 package WebService::Validator::HTML::W3C;
 
@@ -8,8 +8,9 @@ use LWP::UserAgent;
 use URI::Escape;
 use WebService::Validator::HTML::W3C::Error;
 
-__PACKAGE__->mk_accessors( qw( http_timeout validator_uri _http_method
-                               is_valid num_errors uri _content ) );
+__PACKAGE__->mk_accessors(
+    qw( http_timeout validator_uri _http_method
+      is_valid num_errors uri _content ) );
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
@@ -118,8 +119,9 @@ sub validate {
     my $uri_orig = $uri;
     my $req_uri  = $self->_construct_uri($uri);
 
-    my $method   = $self->_http_method();
-    my $ua       = LWP::UserAgent->new( agent => __PACKAGE__ . "/$VERSION", timeout => $self->http_timeout );
+    my $method = $self->_http_method();
+    my $ua = LWP::UserAgent->new( agent   => __PACKAGE__ . "/$VERSION",
+                                  timeout => $self->http_timeout );
     my $request  = new HTTP::Request( $method, "$req_uri" );
     my $response = $ua->simple_request($request);
 
@@ -214,11 +216,13 @@ sub errors {
     my @messages = $xp->findnodes('/result/messages/msg');
 
     foreach my $msg (@messages) {
-        my $err = WebService::Validator::HTML::W3C::Error->new({
-                                       line => $msg->getAttribute('line'),
-                                       col  => $msg->getAttribute('col'),
-                                       msg => $msg->getChildNode(1)->getValue(),
-                                   });
+        my $err = WebService::Validator::HTML::W3C::Error->new(
+                                    {
+                                      line => $msg->getAttribute('line'),
+                                      col  => $msg->getAttribute('col'),
+                                      msg  => $msg->getChildNode(1)->getValue(),
+                                    }
+                                    );
 
         push @errs, $err;
     }
