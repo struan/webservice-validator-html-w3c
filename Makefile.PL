@@ -25,6 +25,24 @@ if ( $skiplive ) {
     unlink $filename;
 }
 
+
+$filename = "t/SKIPXPATH";
+eval { require XML::XPath; };
+if ($@) {
+    open( F, ">$filename" ) or die "Can't create $filename";
+    close F;
+    print <<EOT
+    
+XML::XPath is not installed. This means that you will not be able to 
+access the full functionality of this module. However should you install
+XML::XPath at a later date this functionality will become available
+
+EOT
+            
+} else {
+    unlink $filename;
+}
+
 WriteMakefile
   ('DISTNAME' => 'WebService-Validator-HTML-W3C',
    'VERSION' => '0.10',
