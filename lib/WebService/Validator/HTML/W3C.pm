@@ -1,4 +1,53 @@
-# $Id: W3C.pm,v 1.5 2003/11/17 12:05:17 struan Exp $
+# $Id: W3C.pm,v 1.6 2003/11/17 13:17:17 struan Exp $
+
+package WebService::Validator::HTML::W3C::Error;
+
+sub new {
+    my $ref = shift;
+    my $class = ref $ref || $ref;
+    my $obj = {};
+    bless $obj, $class;
+    $obj->_init(@_);
+    return $obj;
+}
+
+sub _init {
+    my $self = shift;
+    my %args = @_;
+
+    $self->line( $args{line} );
+    $self->col( $args{col} );
+    $self->msg( $args{msg}) ;
+}
+
+sub line {
+    my $self = shift;
+    return $self->_accessor('line', @_);
+}
+
+sub col {
+    my $self = shift;
+    return $self->_accessor('col', @_);
+}
+
+sub msg {
+    my $self = shift;
+    return $self->_accessor('msg', @_);
+}
+
+sub _accessor {
+    my $self = shift;
+    my ($option, $value) = @_;
+
+    if (defined $value) {
+        $self->{$option} = $value;
+    }
+
+    return $self->{$option};
+}
+
+1;
+
 package WebService::Validator::HTML::W3C;
 
 use strict;
@@ -104,13 +153,9 @@ sub validate {
     my $self = shift;
     my $uri = shift;
 
-    unless ( $uri ) {
-        return $self->validator_error("You need to supply a URI to validate");
-    }
+    return $self->validator_error("You need to supply a URI to validate") unless $uri;
 
-    unless ( $uri =~ m(^.*?://) ) {
-        return $self->validator_error("You need to supply a URI scheme (e.g http)");
-    }
+    return $self->validator_error("You need to supply a URI scheme (e.g http)") unless $uri =~ m(^.*?://) ;
 
     my $uri_orig = $uri;
     my $req_uri = $self->_construct_uri($uri);
@@ -123,9 +168,8 @@ sub validate {
     if ($response->is_success) # not an error, we could contact the server
     {
         # set both valid and error number according to response
-        my $valid = $response->header('X-W3C-Validator-Status');
-        my $valid_err_num = $response->header('X-W3C-Validator-Errors');
-        
+
+        my ($valid, $valid_err_num) = $self->_parse_validator_response($response);
         $self->_content( $response->content() ) 
             if $self->_http_method() !~ /HEAD/;
         
@@ -230,10 +274,11 @@ sub errors {
     my @messages = $xp->findnodes('/result/messages/msg');
 
     foreach my $msg ( @messages ) {
-        my $err = {};
-        $err->{line}  = $msg->getAttribute('line');
-        $err->{col}  = $msg->getAttribute('col');
-        $err->{msg} = $msg->getChildNode(1)->getValue();
+        my $err = WebService::Validator::HTML::W3C::Error->new(
+                    line    =>  $msg->getAttribute('line'),
+                    col     =>  $msg->getAttribute('col'),
+                    msg     =>  $msg->getChildNode(1)->getValue(),
+                );
 
         push @errs, $err;
     }
@@ -334,6 +379,16 @@ sub _construct_uri {
                     );
 
     return $self->validator_uri . $req_uri;
+}
+
+sub _parse_validator_response {
+    my $self = shift;
+    my $response = shift;
+    
+    my $valid = $response->header('X-W3C-Validator-Status');
+    my $valid_err_num = $response->header('X-W3C-Validator-Errors');
+
+    return ($valid, $valid_err_num);
 }
 
 sub _http_method {
