@@ -1,4 +1,4 @@
-# $Id: W3C.pm,v 1.1 2003/11/11 22:49:12 struan Exp $
+# $Id: W3C.pm,v 1.2 2003/11/11 23:44:46 struan Exp $
 package WebService::Validator::HTML::W3C;
 
 use strict;
@@ -8,8 +8,7 @@ use URI::Escape;
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
 $VERSION = 0.01;
-#$VALIDATOR_URI = 'http://validator.w3.org/check';
-$VALIDATOR_URI = 'http://validator.exo.org.uk/check';
+$VALIDATOR_URI = 'http://validator.w3.org/check';
 $HTTP_TIMEOUT = 30;
 
 =head1 NAME
