@@ -1,4 +1,4 @@
-# $Id: W3C.pm,v 1.2 2003/11/11 23:44:46 struan Exp $
+# $Id: W3C.pm,v 1.3 2003/11/14 16:52:05 struan Exp $
 package WebService::Validator::HTML::W3C;
 
 use strict;
@@ -140,7 +140,7 @@ sub validate {
         # we know the validator has been able to (in)validate if 
         # $self->valid is not NULL
         
-        if ( ($valid) and ($valid_err_num) ) {
+        if ( $valid and $valid_err_num ) {
             $self->is_valid(0);
             $self->num_errors($valid_err_num);
             $self->uri($uri_orig);
@@ -148,7 +148,7 @@ sub validate {
         } elsif ( !defined $valid ) {
             $self->validator_error('Not a W3C Validator or Bad URI');
             return 0;
-        } elsif ( $valid =~ /valid/i ) {
+        } elsif ( $valid =~ /\bvalid\b/i ) {
             $self->is_valid(1);
             $self->num_errors($valid_err_num);
             $self->uri($uri_orig);
@@ -222,7 +222,7 @@ Note that you need XML::XPath for this to work.
 sub errors {
     my $self = shift;
 
-    return [] unless $self->num_errors();
+    return undef unless $self->num_errors();
 
     my @errs;
     
