@@ -1,4 +1,4 @@
-# $Id: W3C.pm,v 1.11 2003/11/25 11:30:33 struan Exp $
+# $Id: W3C.pm,v 1.12 2003/11/25 16:40:27 struan Exp $
 
 package WebService::Validator::HTML::W3C;
 
@@ -119,7 +119,7 @@ sub validate {
     my $req_uri  = $self->_construct_uri($uri);
 
     my $method   = $self->_http_method();
-    my $ua       = LWP::UserAgent->new( timeout => $self->http_timeout );
+    my $ua       = LWP::UserAgent->new( agent => __PACKAGE__ . "/$VERSION", timeout => $self->http_timeout );
     my $request  = new HTTP::Request( $method, "$req_uri" );
     my $response = $ua->simple_request($request);
 
