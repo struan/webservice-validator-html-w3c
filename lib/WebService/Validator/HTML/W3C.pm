@@ -5,6 +5,7 @@ package WebService::Validator::HTML::W3C;
 use strict;
 use base qw( Class::Accessor );
 use LWP::UserAgent;
+use HTTP::Request::Common 'POST';
 use URI::Escape;
 use WebService::Validator::HTML::W3C::Error;
 
@@ -112,19 +113,19 @@ sub validate {
     my $self = shift;
     my $uri  = shift;
 
-    return $self->validator_error("You need to supply a URI to validate")
+    return $self->validator_error("You need to supply a URI, file or scalar to validate")
       unless $uri;
 
     return $self->validator_error("You need to supply a URI scheme (e.g http)")
-      unless $uri =~ m(^.*?://);
+      unless $uri =~ m(^.*?://) || ref $uri;
 
     my $uri_orig = $uri;
-    my $req_uri  = $self->_construct_uri($uri);
 
-    my $method = $self->_http_method();
     my $ua = LWP::UserAgent->new( agent   => __PACKAGE__ . "/$VERSION",
                                   timeout => $self->http_timeout );
-    my $request  = new HTTP::Request( $method, "$req_uri" );
+
+    my $request  = $self->_get_request( $uri );
+
     my $response = $ua->simple_request($request);
 
     if ( $response->is_success )    # not an error, we could contact the server
@@ -336,6 +337,36 @@ sub _parse_validator_response {
 
     return ( $valid, $valid_err_num );
 }
+
+sub _get_request {
+    my $self = shift;
+    my $uri = shift;
+
+    if ( ref $uri ) {
+        if ( $uri->{ file } ) {
+            return POST $self->validator_uri, 
+                        Content_Type  =>  'form-data', 
+                        Content       =>  [
+                                           output => 'xml',
+                                           uploaded_file => [ $uri->{ file } ],
+                                          ];
+        } elsif ( $uri->{ markup } ) {
+            return POST $self->validator_uri, 
+                        Content_Type  =>  'form-data', 
+                        Content       =>  [
+                                           output => 'xml',
+                                           uploaded_file => [ 
+                                                             undef, 
+                                                             'file.html', 
+                                                             Content => $uri->{ markup } 
+                                                             ],
+                                          ];
+        }
+    } else {
+        return new HTTP::Request( $self->_http_method(), $self->_construct_uri( $uri ) );
+    }
+}
+        
 1;
 
 __END__
