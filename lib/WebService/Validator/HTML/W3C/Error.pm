@@ -1,4 +1,4 @@
-# $Id: Error.pm,v 1.3 2003/11/24 21:55:59 struan Exp $
+# $Id: Error.pm,v 1.4 2003/11/26 13:52:18 struan Exp $
 
 package WebService::Validator::HTML::W3C::Error;
 
@@ -9,7 +9,11 @@ __PACKAGE__->mk_accessors( qw( line col msg ) );
 
 1;
 
-=head1 NAME WebService::Validator::HTML::W3C::Error
+__END__
+
+=head1 NAME 
+
+WebService::Validator::HTML::W3C::Error - Error messages from the W3Cs online Validator
 
 =head1 DESCRIPTION
 
@@ -17,10 +21,12 @@ This is a wee internal module for WebService::Validator::HTML::W3C. It has
 three methods: line, col and msg which return the line number, column number 
 and the error that occured at that location in a validated page.
 
-See the WebService::Validator::HTML::W3C Documentation for more details.
+=head1 SEE ALSO
+
+L<WebService::Validator::HTML::W3C>
 
 =head1 AUTHOR
 
-Struan Donald
+Struan Donald E<lt>struan@cpan.orgE<gt>
 
 =cut
