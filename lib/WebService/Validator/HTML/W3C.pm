@@ -1,4 +1,4 @@
-# $Id: W3C.pm,v 1.10 2003/11/24 21:50:30 struan Exp $
+# $Id: W3C.pm,v 1.11 2003/11/25 11:30:33 struan Exp $
 
 package WebService::Validator::HTML::W3C;
 
@@ -171,7 +171,7 @@ Returns true (1) if the URI validated otherwise 0.
 
     $v->uri();
 
-Returns the URI of the last page on which validation suceeded.
+Returns the URI of the last page on which validation succeeded.
 
 
 =head2 num_errors
@@ -191,7 +191,7 @@ Returns the number of errors that the validator encountered.
 
 Returns an array ref of WebService::Validator::HTML::W3C::Error objects.
 These have line, col and msg methods that return a line number, a column 
-in that line and the error that occured at that point.
+in that line and the error that occurred at that point.
 
 Note that you need XML::XPath for this to work.
 
@@ -230,7 +230,7 @@ sub errors {
 
     $error = $v->validator_error();
 
-Returns a string indicating why validation may not have occured. This is not
+Returns a string indicating why validation may not have occurred. This is not
 the reason that a webpage was invalid. It is the reason that no meaningful 
 information about the attempted validation could be obtained. This is most
 likely to be an HTTP error
@@ -246,7 +246,7 @@ You didn't pass a URI to the validate method
 =item You need to supply a URI with a scheme
 
 The URI you passed to validate didn't have a scheme on the front. The 
-W3C validatory can't handle URIs like www.example.com but instead
+W3C validator can't handle URIs like www.example.com but instead
 needs URIs of the form http://www.example.com/.
 
 =item Not a W3C Validator or Bad URI
@@ -330,11 +330,11 @@ Please note that there is also an official W3C module that is part of the
 W3C::LogValidator distribution. However that module is not very useful outside
 the constraints of that package. WebService::Validator::HTML::W3C is meant as a more general way to access the W3C Validator.
 
-HTML::Validator uses ngmls to validate against
+HTML::Validator uses nsgmls to validate against
 the W3Cs DTDs. You have to fetch the relevant DTDs and so on.
 
 There is also the HTML::Parser based HTML::Lint which mostly checks for 
-known tags rather than XML/HTML validty.
+known tags rather than XML/HTML validity.
 
 =head1 IMPORTANT
 
@@ -349,9 +349,9 @@ it is available via apt-get.
 =head1 BUGS
 
 While the interface to the Validator seems to be fairly stable it may be 
-updated. I will endevour to track any changes with this module so please
+updated. I will endeavour to track any changes with this module so please
 check on CPAN for new versions. Also note that this module is only 
-gaurunteed to work with the currently stable version of the validator. It
+guaranteed to work with the currently stable version of the validator. It
 will most likely work with any Beta versions but don't rely on it.
 
 If in doubt please try and run the test suite before reporting bugs. 
@@ -361,7 +361,7 @@ with patches ;).
 
 =head1 SUPPORT
 
-author email.
+author email or via http://rt.cpan.org/.
 
 =head1 AUTHOR
 
