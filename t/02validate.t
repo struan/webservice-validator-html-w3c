@@ -1,4 +1,4 @@
-# $Id: 02validate.t,v 1.1 2003/11/11 22:49:12 struan Exp $
+# $Id: 02validate.t,v 1.2 2003/11/11 23:15:08 struan Exp $
 
 use Test::More tests => 6;
 
@@ -10,7 +10,11 @@ ok($v, 'Object created');
 
 is($v->validator_uri(), 'http://validator.w3.org/check', 'correct default validator uri');
 
-ok($v->validate('http://exo.org.uk/code/www-w3c-validator/valid.html'), 'validates page');
-ok($v->is_valid, 'page is valid');
-is($v->num_errors, 0, 'no errors in valid page');
-is($v->uri, 'http://exo.org.uk/code/www-w3c-validator/valid.html', 'uri correct');
+SKIP: {
+    skip "no internet connection", 4 if -f "t/SKIPLIVE";
+    
+    ok($v->validate('http://exo.org.uk/code/www-w3c-validator/valid.html'), 'validates page');
+    ok($v->is_valid, 'page is valid');
+    is($v->num_errors, 0, 'no errors in valid page');
+    is($v->uri, 'http://exo.org.uk/code/www-w3c-validator/valid.html', 'uri correct');
+}
