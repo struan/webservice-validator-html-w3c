@@ -7,3 +7,4 @@
 ^MANIFEST\.SKIP$
 ^output.xml
 CVS
+^TODO
