@@ -14,7 +14,7 @@ __PACKAGE__->mk_accessors(
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
-$VERSION       = 0.04;
+$VERSION       = 0.05;
 $VALIDATOR_URI = 'http://validator.w3.org/check';
 $HTTP_TIMEOUT  = 30;
 
@@ -33,8 +33,8 @@ WebService::Validator::HTML::W3C - Access the W3Cs online HTML validator
             printf ("%s is valid\n", $v->uri);
         } else {
             printf ("%s is not valid\n", $v->uri);
-            foreach $error ( $v->errors ) {
-                printf("%s at line %n\n", $error->msg,
+            foreach $error ( @{$v->errors} ) {
+                printf("%s at line %d\n", $error->msg,
                                           $error->line);
             }
         }
@@ -72,6 +72,10 @@ The URI of the validator to use.  By default this accesses the W3Cs validator at
 
 How long (in seconds) to wait for the HTTP connection to timeout when
 contacting the validator. By default this is 30 seconds.
+
+=item detailed
+
+This fetched the XML response from the validator in order to provide information for the errors method. You should set this to true if you intend to use the errors method.
 
 =back 
 
