@@ -1,4 +1,4 @@
-# $Id: W3C.pm,v 1.15 2003/11/26 14:24:32 struan Exp $
+# $Id: W3C.pm,v 1.16 2003/11/26 14:57:39 struan Exp $
 
 package WebService::Validator::HTML::W3C;
 
@@ -361,6 +361,11 @@ If in doubt please try and run the test suite before reporting bugs.
 
 That said I'm very happy to hear about bugs. All the more so if they come
 with patches ;).
+
+=head1 THANKS
+
+To the various people on the code review ladder mailing list who 
+provided useful suggestions.
 
 =head1 SUPPORT
 
