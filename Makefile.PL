@@ -55,7 +55,7 @@ if ($@) {
 
 WriteMakefile
   ('DISTNAME' => 'WebService-Validator-HTML-W3C',
-   'VERSION' => '0.10',
+   'VERSION' => '0.03',
    'PL_FILES' => {},
    'PREREQ_PM' => {
         'Class::Accessor' => 0,

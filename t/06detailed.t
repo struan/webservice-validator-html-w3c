@@ -1,4 +1,4 @@
-# $Id: 06detailed.t,v 1.3 2003/11/17 13:17:44 struan Exp $
+# $Id: 06detailed.t,v 1.4 2004/05/09 13:28:03 struan Exp $
 
 use Test::More tests => 6;
 use WebService::Validator::HTML::W3C;
@@ -20,7 +20,7 @@ SKIP: {
     isa_ok($err, 'WebService::Validator::HTML::W3C::Error');
     is($err->line, 11, 'Correct line number');
     is($err->col, 6, 'Correct column');
-    is($err->msg, qq/ end tag for "div" omitted, but OMITTAG NO was specified/,
+    like($err->msg, qr/end tag for "div" omitted, but OMITTAG NO was specified/,
                     'Correct message');
     
 }

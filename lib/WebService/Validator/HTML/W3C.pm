@@ -1,4 +1,4 @@
-# $Id: W3C.pm,v 1.17 2004/01/13 22:30:25 struan Exp $
+# $Id: W3C.pm,v 1.18 2004/05/09 13:28:02 struan Exp $
 
 package WebService::Validator::HTML::W3C;
 
@@ -14,7 +14,7 @@ __PACKAGE__->mk_accessors(
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
-$VERSION       = 0.02;
+$VERSION       = 0.03;
 $VALIDATOR_URI = 'http://validator.w3.org/check';
 $HTTP_TIMEOUT  = 30;
 
