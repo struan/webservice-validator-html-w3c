@@ -38,9 +38,9 @@ my $v = WebService::Validator::HTML::W3C->new(
 
 ok($v, 'object created');
 
-ok($v->validate( { markup => $valid } ), 'validated valid scalar');
+ok($v->validate_markup( $valid ), 'validated valid scalar');
 ok($v->is_valid(), 'valid scalar is valid');
 
-ok( $v->validate( { markup => $invalid } ), 'validated invalid scalar');
+ok( $v->validate_markup( $invalid ), 'validated invalid scalar');
 ok(!$v->is_valid(), 'invalid scalar is invalid');
 is( $v->num_errors(), 2, 'correct number of errors');

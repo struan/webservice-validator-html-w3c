@@ -10,9 +10,9 @@ my $v = WebService::Validator::HTML::W3C->new(
     
 ok($v, 'object created');
 
-ok($v->validate( { file => 't/valid.html' } ), 'validated valid file');
+ok($v->validate_file( 't/valid.html' ), 'validated valid file');
 ok($v->is_valid(), 'valid file is valid');
 
-ok( $v->validate( { file => 't/invalid.html' } ), 'validated invalid file');
+ok( $v->validate_file( 't/invalid.html' ), 'validated invalid file');
 ok( !$v->is_valid(), 'invalid file is invalid' );
 is( $v->num_errors(), 2, 'correct number of errors');
