@@ -1,11 +1,11 @@
-# $Id: W3C.pm,v 1.7 2003/11/20 19:03:08 struan Exp $
+# $Id: W3C.pm,v 1.8 2003/11/20 19:04:38 struan Exp $
 
 package WebService::Validator::HTML::W3C::Error;
 
 sub new {
-    my $ref = shift;
+    my $ref   = shift;
     my $class = ref $ref || $ref;
-    my $obj = {};
+    my $obj   = {};
     bless $obj, $class;
     $obj->_init(@_);
     return $obj;
@@ -17,29 +17,29 @@ sub _init {
 
     $self->line( $args{line} );
     $self->col( $args{col} );
-    $self->msg( $args{msg}) ;
+    $self->msg( $args{msg} );
 }
 
 sub line {
     my $self = shift;
-    return $self->_accessor('line', @_);
+    return $self->_accessor( 'line', @_ );
 }
 
 sub col {
     my $self = shift;
-    return $self->_accessor('col', @_);
+    return $self->_accessor( 'col', @_ );
 }
 
 sub msg {
     my $self = shift;
-    return $self->_accessor('msg', @_);
+    return $self->_accessor( 'msg', @_ );
 }
 
 sub _accessor {
     my $self = shift;
-    my ($option, $value) = @_;
+    my ( $option, $value ) = @_;
 
-    if (defined $value) {
+    if ( defined $value ) {
         $self->{$option} = $value;
     }
 
@@ -56,9 +56,9 @@ use URI::Escape;
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
-$VERSION = 0.01;
+$VERSION       = 0.01;
 $VALIDATOR_URI = 'http://validator.w3.org/check';
-$HTTP_TIMEOUT = 30;
+$HTTP_TIMEOUT  = 30;
 
 =head1 NAME
 
@@ -122,9 +122,9 @@ contacting the validator. By default this is 30 seconds.
 =cut
 
 sub new {
-    my $ref = shift;
+    my $ref   = shift;
     my $class = ref $ref || $ref;
-    my $obj = {};
+    my $obj   = {};
     bless $obj, $class;
     $obj->_init(@_);
     return $obj;
@@ -134,10 +134,10 @@ sub _init {
     my $self = shift;
     my %args = @_;
 
-    $self->http_timeout($args{http_timeout} || $HTTP_TIMEOUT);
-    $self->validator_uri($args{validator_uri} || $VALIDATOR_URI);
-    $self->_http_method($args{detailed} ? 'GET' : 'HEAD');
-    $self->_debug($args{debug}) if $args{debug};
+    $self->http_timeout( $args{http_timeout}   || $HTTP_TIMEOUT );
+    $self->validator_uri( $args{validator_uri} || $VALIDATOR_URI );
+    $self->_http_method( $args{detailed} ? 'GET' : 'HEAD' );
+    $self->_debug( $args{debug} ) if $args{debug};
 }
 
 =head2 validate
@@ -151,51 +151,58 @@ validator cannot be reached), otherwise 1.
 
 sub validate {
     my $self = shift;
-    my $uri = shift;
+    my $uri  = shift;
 
-    return $self->validator_error("You need to supply a URI to validate") unless $uri;
+    return $self->validator_error("You need to supply a URI to validate")
+      unless $uri;
 
-    return $self->validator_error("You need to supply a URI scheme (e.g http)") unless $uri =~ m(^.*?://) ;
+    return $self->validator_error("You need to supply a URI scheme (e.g http)")
+      unless $uri =~ m(^.*?://);
 
     my $uri_orig = $uri;
-    my $req_uri = $self->_construct_uri($uri);
+    my $req_uri  = $self->_construct_uri($uri);
 
-    my $method = $self->_http_method();
-    my $ua = LWP::UserAgent->new( timeout => $self->http_timeout );
-    my $request = new HTTP::Request($method, "$req_uri");
+    my $method   = $self->_http_method();
+    my $ua       = LWP::UserAgent->new( timeout => $self->http_timeout );
+    my $request  = new HTTP::Request( $method, "$req_uri" );
     my $response = $ua->simple_request($request);
 
-    if ($response->is_success) # not an error, we could contact the server
+    if ( $response->is_success )    # not an error, we could contact the server
     {
+
         # set both valid and error number according to response
 
-        my ($valid, $valid_err_num) = $self->_parse_validator_response($response);
-        $self->_content( $response->content() ) 
-            if $self->_http_method() !~ /HEAD/;
-        
-        # we know the validator has been able to (in)validate if 
+        my ( $valid, $valid_err_num ) =
+          $self->_parse_validator_response($response);
+        $self->_content( $response->content() )
+          if $self->_http_method() !~ /HEAD/;
+
+        # we know the validator has been able to (in)validate if
         # $self->valid is not NULL
-        
+
         if ( $valid and $valid_err_num ) {
             $self->is_valid(0);
             $self->num_errors($valid_err_num);
             $self->uri($uri_orig);
             return 1;
-        } elsif ( !defined $valid ) {
+        }
+        elsif ( !defined $valid ) {
             return $self->validator_error('Not a W3C Validator or Bad URI');
-        } elsif ( $valid =~ /\bvalid\b/i ) {
+        }
+        elsif ( $valid =~ /\bvalid\b/i ) {
             $self->is_valid(1);
             $self->num_errors($valid_err_num);
             $self->uri($uri_orig);
             return 1;
         }
 
-        return $self->validator_error('Did not get a sensible result from the Validator');
-    } else {
+        return $self->validator_error(
+                            'Did not get a sensible result from the Validator');
+    }
+    else {
         return $self->validator_error('Could not contact validator');
     }
 }
-
 
 =head2 is_valid 
 
@@ -206,9 +213,9 @@ Returns true (1) if the URI validated otherwise 0.
 =cut
 
 sub is_valid {
-    my $self = shift;
+    my $self  = shift;
     my $valid = shift;
-    return $self->_accessor('valid', $valid);
+    return $self->_accessor( 'valid', $valid );
 }
 
 =head2 uri
@@ -221,8 +228,8 @@ Returns the URI of the last page on which validation suceeded.
 
 sub uri {
     my $self = shift;
-    my $uri = shift;
-    return $self->_accessor('uri', $uri);
+    my $uri  = shift;
+    return $self->_accessor( 'uri', $uri );
 }
 
 =head2 num_errors
@@ -234,9 +241,9 @@ Returns the number of errors that the validator encountered.
 =cut
 
 sub num_errors {
-    my $self = shift;
+    my $self       = shift;
     my $num_errors = shift;
-    return $self->_accessor('num_errors', $num_errors);
+    return $self->_accessor( 'num_errors', $num_errors );
 }
 
 =head2 errors
@@ -262,24 +269,22 @@ sub errors {
     return undef unless $self->num_errors();
 
     my @errs;
-    
-    eval {
-        require XML::XPath;
-    };
+
+    eval { require XML::XPath; };
     if ($@) {
         warn "XML::XPath must be installed in order to get detailed errors";
         return undef;
-    } 
+    }
 
-    my $xp = XML::XPath->new( xml => $self->_content() );
+    my $xp       = XML::XPath->new( xml => $self->_content() );
     my @messages = $xp->findnodes('/result/messages/msg');
 
-    foreach my $msg ( @messages ) {
+    foreach my $msg (@messages) {
         my $err = WebService::Validator::HTML::W3C::Error->new(
-                    line    =>  $msg->getAttribute('line'),
-                    col     =>  $msg->getAttribute('col'),
-                    msg     =>  $msg->getChildNode(1)->getValue(),
-                );
+                                       line => $msg->getAttribute('line'),
+                                       col  => $msg->getAttribute('col'),
+                                       msg => $msg->getChildNode(1)->getValue(),
+                                       );
 
         push @errs, $err;
     }
@@ -332,7 +337,7 @@ sense of the response from the validator you'll get this error.
 =cut
 
 sub validator_error {
-    my $self = shift;
+    my $self            = shift;
     my $validator_error = shift;
 
     if ( defined $validator_error ) {
@@ -354,9 +359,9 @@ to use the full path to the validator cgi.
 =cut
 
 sub validator_uri {
-    my $self = shift;
+    my $self          = shift;
     my $validator_uri = shift;
-    return $self->_accessor('validator_uri', $validator_uri);
+    return $self->_accessor( 'validator_uri', $validator_uri );
 }
 
 =head2 http_timeout
@@ -369,58 +374,55 @@ Returns or sets the timeout for the HTTP request.
 =cut
 
 sub http_timeout {
-    my $self = shift;
+    my $self         = shift;
     my $http_timeout = shift;
-    return $self->_accessor('http_timeout', $http_timeout);
+    return $self->_accessor( 'http_timeout', $http_timeout );
 }
 
 sub _construct_uri {
-    my $self = shift;
+    my $self            = shift;
     my $uri_to_validate = shift;
-    
+
     # creating the HTTP query string with all parameters
-    my $req_uri = join('', 
-                        "?uri=",
-                        uri_escape($uri_to_validate),
-                        ";output=xml"
-                    );
+    my $req_uri =
+      join ( '', "?uri=", uri_escape($uri_to_validate), ";output=xml" );
 
     return $self->validator_uri . $req_uri;
 }
 
 sub _parse_validator_response {
-    my $self = shift;
+    my $self     = shift;
     my $response = shift;
-    
-    my $valid = $response->header('X-W3C-Validator-Status');
+
+    my $valid         = $response->header('X-W3C-Validator-Status');
     my $valid_err_num = $response->header('X-W3C-Validator-Errors');
 
-    return ($valid, $valid_err_num);
+    return ( $valid, $valid_err_num );
 }
 
 sub _http_method {
-    my $self = shift;
+    my $self        = shift;
     my $http_method = shift;
-    return $self->_accessor('_http_method', $http_method);
+    return $self->_accessor( '_http_method', $http_method );
 }
 
 sub _content {
-    my $self = shift;
+    my $self    = shift;
     my $content = shift;
-    return $self->_accessor('content', $content);
+    return $self->_accessor( 'content', $content );
 }
 
 sub _debug {
-    my $self = shift;
+    my $self        = shift;
     my $debug_level = shift;
-    return $self->_accessor('_debug_level', $debug_level);
+    return $self->_accessor( '_debug_level', $debug_level );
 }
 
 sub _accessor {
     my $self = shift;
-    my ($option, $value) = @_;
+    my ( $option, $value ) = @_;
 
-    if (defined $value) {
+    if ( defined $value ) {
         $self->{$option} = $value;
     }
 
