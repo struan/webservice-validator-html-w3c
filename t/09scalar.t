@@ -1,6 +1,6 @@
 # $Id$
 
-use Test::More tests => 6;
+use Test::More tests => 8;
 
 use WebService::Validator::HTML::W3C;
 
@@ -37,6 +37,10 @@ my $v = WebService::Validator::HTML::W3C->new(
         );
 
 ok($v, 'object created');
+
+ok( !$v->validate_markup(), 'fails if no markup' );
+is( $v->validator_error(), 'You need to supply markup to validate',
+    'you need to supply markup error' );
 
 ok($v->validate_markup( $valid ), 'validated valid scalar');
 ok($v->is_valid(), 'valid scalar is valid');
