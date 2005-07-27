@@ -26,8 +26,8 @@ SKIP: {
         'not a W3C validator error');
 }
 
-ok($v->validator_uri('http://doa.exo.org.uk/'), 'validator address changed');
-is($v->validator_uri, 'http://doa.exo.org.uk/', 'correct validator uri');
+ok($v->validator_uri('http://doa.example.com/'), 'validator address changed');
+is($v->validator_uri, 'http://doa.example.com/', 'correct validator uri');
 
 ok(!$v->validate('http://exo.org.uk/code/valid.html'), 'validation fails');
 is($v->validator_error, 'Could not contact validator', 
