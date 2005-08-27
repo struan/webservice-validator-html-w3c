@@ -394,11 +394,7 @@ sub _get_request {
                         Content_Type  =>  'form-data', 
                         Content       =>  [
                                            output => 'xml',
-                                           uploaded_file => [ 
-                                                             undef, 
-                                                             'file.html', 
-                                                             Content => $uri->{ markup } 
-                                                             ],
+                                           fragment => $uri->{ markup },
                                           ];
         }
     } else {
