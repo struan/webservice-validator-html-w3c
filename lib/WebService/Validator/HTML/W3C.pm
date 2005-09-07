@@ -27,7 +27,9 @@ WebService::Validator::HTML::W3C - Access the W3Cs online HTML validator
 
     use WebService::Validator::HTML::W3C;
 
-    my $v = WebService::Validator::HTML::W3C->new();
+    my $v = WebService::Validator::HTML::W3C->new(
+                detailed    =>  1
+            );
 
     if ( $v->validate("http://www.example.com/") ) {
         if ( $v->is_valid ) {
