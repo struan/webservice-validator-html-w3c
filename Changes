@@ -1,5 +1,6 @@
 0.09 Wednesday 7th September 2005
     - Added in pod coverage test
+    - fixed doc bug -> rt.cpan.org #14480
 
 0.08 Saturday 27th August 2005
     - Fixed broken scalar validation
