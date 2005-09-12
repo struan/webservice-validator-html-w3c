@@ -15,7 +15,7 @@ __PACKAGE__->mk_accessors(
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
-$VERSION       = 0.09;
+$VERSION       = 0.10;
 $VALIDATOR_URI = 'http://validator.w3.org/check';
 $HTTP_TIMEOUT  = 30;
 
@@ -78,7 +78,7 @@ contacting the validator. By default this is 30 seconds.
 
 =item detailed
 
-This fetched the XML response from the validator in order to provide information for the errors method. You should set this to true if you intend to use the errors method.
+This fetches the XML response from the validator in order to provide information for the errors method. You should set this to true if you intend to use the errors method.
 
 =back 
 

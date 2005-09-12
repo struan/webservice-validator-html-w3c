@@ -1,3 +1,7 @@
+0.10 Monday 12th September 2005
+    - scalar and file tests now skip if no connection
+    - fixed typo also from rt.cpan.org #14480
+
 0.09 Wednesday 7th September 2005
     - Added in pod coverage test
     - fixed doc bug -> rt.cpan.org #14480
