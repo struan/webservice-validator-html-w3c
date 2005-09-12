@@ -36,15 +36,19 @@ my $v = WebService::Validator::HTML::W3C->new(
             http_timeout    =>  10,
         );
 
-ok($v, 'object created');
+SKIP: {
+    skip "no internet connection", 8 if -f 't/SKIPLIVE';
 
-ok( !$v->validate_markup(), 'fails if no markup' );
-is( $v->validator_error(), 'You need to supply markup to validate',
-    'you need to supply markup error' );
+    ok($v, 'object created');
 
-ok($v->validate_markup( $valid ), 'validated valid scalar');
-ok($v->is_valid(), 'valid scalar is valid');
+    ok( !$v->validate_markup(), 'fails if no markup' );
+    is( $v->validator_error(), 'You need to supply markup to validate',
+        'you need to supply markup error' );
 
-ok( $v->validate_markup( $invalid ), 'validated invalid scalar');
-ok(!$v->is_valid(), 'invalid scalar is invalid');
-is( $v->num_errors(), 2, 'correct number of errors');
+    ok($v->validate_markup( $valid ), 'validated valid scalar');
+    ok($v->is_valid(), 'valid scalar is valid');
+
+    ok( $v->validate_markup( $invalid ), 'validated invalid scalar');
+    ok(!$v->is_valid(), 'invalid scalar is invalid');
+    is( $v->num_errors(), 2, 'correct number of errors');
+}
