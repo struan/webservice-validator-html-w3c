@@ -11,7 +11,7 @@ use WebService::Validator::HTML::W3C::Error;
 
 __PACKAGE__->mk_accessors(
     qw( http_timeout validator_uri _http_method
-      is_valid num_errors uri _content ) );
+      is_valid num_errors uri _content _output ) );
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
@@ -100,6 +100,7 @@ sub _init {
     $self->http_timeout( $args{http_timeout}   || $HTTP_TIMEOUT );
     $self->validator_uri( $args{validator_uri} || $VALIDATOR_URI );
     $self->_http_method( $args{detailed} ? 'GET' : 'HEAD' );
+    $self->_output( $args{output} || 'xml' );
 }
 
 =head2 validate
@@ -364,7 +365,7 @@ sub _construct_uri {
 
     # creating the HTTP query string with all parameters
     my $req_uri =
-      join ( '', "?uri=", uri_escape($uri_to_validate), ";output=xml" );
+      join ( '', "?uri=", uri_escape($uri_to_validate), ";output=", $self->_output );
 
     return $self->validator_uri . $req_uri;
 }
@@ -388,14 +389,14 @@ sub _get_request {
             return POST $self->validator_uri, 
                         Content_Type  =>  'form-data', 
                         Content       =>  [
-                                           output => 'xml',
+                                           output => $self->_output,
                                            uploaded_file => [ $uri->{ file } ],
                                           ];
         } elsif ( $uri->{ markup } ) {
             return POST $self->validator_uri, 
                         Content_Type  =>  'form-data', 
                         Content       =>  [
-                                           output => 'xml',
+                                           output => $self->_output,
                                            fragment => $uri->{ markup },
                                           ];
         }
