@@ -1,3 +1,6 @@
+0.11 Saturday 25th February 2006
+    - added output option and asociated SOAP output support
+
 0.10 Monday 12th September 2005
     - scalar and file tests now skip if no connection
     - fixed typo also from rt.cpan.org #14480
