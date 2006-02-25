@@ -268,18 +268,31 @@ sub errors {
     }
 
     my $xp       = XML::XPath->new( xml => $self->_content() );
-    my @messages = $xp->findnodes('/result/messages/msg');
 
-    foreach my $msg (@messages) {
-        my $err = WebService::Validator::HTML::W3C::Error->new(
-                                    {
-                                      line => $msg->getAttribute('line'),
-                                      col  => $msg->getAttribute('col'),
-                                      msg  => $msg->getChildNode(1)->getValue(),
-                                    }
-                                    );
+    if ( $self->_output eq 'xml' ) {
+        my @messages = $xp->findnodes('/result/messages/msg');
 
-        push @errs, $err;
+        foreach my $msg (@messages) {
+            my $err = WebService::Validator::HTML::W3C::Error->new({
+                          line => $msg->getAttribute('line'),
+                          col  => $msg->getAttribute('col'),
+                          msg  => $msg->getChildNode(1)->getValue(),
+                      });
+
+            push @errs, $err;
+        }
+    } else { # assume soap...
+       my @messages = $xp->findnodes( '/env:Envelope/env:Body/m:markupvalidationresponse/m:errors/m:errorlist/m:error' );
+
+       foreach my $msg ( @messages ) {
+           my $err = WebService::Validator::HTML::W3C::Error->new({ 
+                          line => $xp->find( './m:line', $msg )->get_node(1)->getChildNode(1)->getValue,
+                          col  => $xp->find( './m:col', $msg )->get_node(1)->getChildNode(1)->getValue,
+                          msg  => $xp->find( './m:message', $msg )->get_node(1)->getChildNode(1)->getValue,
+                      });
+
+            push @errs, $err;
+        }
     }
 
     return \@errs;
