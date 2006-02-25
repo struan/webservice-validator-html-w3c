@@ -80,6 +80,14 @@ contacting the validator. By default this is 30 seconds.
 
 This fetches the XML response from the validator in order to provide information for the errors method. You should set this to true if you intend to use the errors method.
 
+=item output
+
+Controls which output format is used. Can be either xml or soap12.
+
+At the moment the default is XML as this is the only one supported by the Validator. However in the future it is moving to using SOAP for the detailed reporting.
+
+The default will always work so unless you're using a development version of the Validator you can safely ignore this.
+
 =back 
 
 =cut
