@@ -10,7 +10,7 @@ use URI::Escape;
 use WebService::Validator::HTML::W3C::Error;
 
 __PACKAGE__->mk_accessors(
-    qw( http_timeout validator_uri _http_method
+    qw( http_timeout validator_uri proxy _http_method
       is_valid num_errors uri _content _output ) );
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
@@ -80,6 +80,10 @@ contacting the validator. By default this is 30 seconds.
 
 This fetches the XML response from the validator in order to provide information for the errors method. You should set this to true if you intend to use the errors method.
 
+=item proxy
+
+An HTTP proxy to use when communicating with the validation service.
+
 =item output
 
 Controls which output format is used. Can be either xml or soap12.
@@ -109,6 +113,7 @@ sub _init {
     $self->validator_uri( $args{validator_uri} || $VALIDATOR_URI );
     $self->_http_method( $args{detailed} ? 'GET' : 'HEAD' );
     $self->_output( $args{output} || 'xml' );
+    $self->proxy( $args{proxy} || '' );
 }
 
 =head2 validate
@@ -174,7 +179,9 @@ sub _validate {
     my $ua = LWP::UserAgent->new( agent   => __PACKAGE__ . "/$VERSION",
                                   timeout => $self->http_timeout );
 
-    my $request  = $self->_get_request( $uri );
+    if ( $self->proxy ) { $ua->proxy( 'http', $self->proxy ); }
+
+    my $request = $self->_get_request( $uri );
 
     my $response = $ua->simple_request($request);
 
