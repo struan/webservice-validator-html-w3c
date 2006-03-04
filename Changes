@@ -1,3 +1,6 @@
+0.12 Sunday 5th March 2005
+    - added in Proxy support courtesy of Carl Vincent <c.a.vincent@ncl.ac.uk>
+
 0.11 Saturday 25th February 2006
     - added output option and asociated SOAP output support
 
