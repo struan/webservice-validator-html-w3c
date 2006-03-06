@@ -248,7 +248,7 @@ Returns the number of errors that the validator encountered.
     
     foreach my $err ( @$errors ) {
         printf("line: %s, col: %s\n\terror: %s\n", 
-                $err-line, $err->col, $err->msg);
+                $err->line, $err->col, $err->msg);
     }
 
 Returns an array ref of WebService::Validator::HTML::W3C::Error objects.
@@ -260,6 +260,9 @@ WebService::Validator::HTML::W3C with the detailed option. If you have not
 set the detailed option a warning will be issued, the detailed option will
 be set and a second request made to the validator in order to fetch the
 required information. 
+
+If there was a problem processing the detailed information then this method 
+will return 0.
 
 =cut
 
@@ -285,6 +288,9 @@ sub errors {
     my $xp       = XML::XPath->new( xml => $self->_content() );
 
     if ( $self->_output eq 'xml' ) {
+        if ( ! $xp->findnodes('/result') ) {
+            return $self->validator_error( 'Result format does not appear to be XML' );
+        }
         my @messages = $xp->findnodes('/result/messages/msg');
 
         foreach my $msg (@messages) {
@@ -297,6 +303,9 @@ sub errors {
             push @errs, $err;
         }
     } else { # assume soap...
+        if ( ! $xp->findnodes('/env:Envelope') ) {
+            return $self->validator_error( 'Result format does not appear to be SOAP' );
+        }
        my @messages = $xp->findnodes( '/env:Envelope/env:Body/m:markupvalidationresponse/m:errors/m:errorlist/m:error' );
 
        foreach my $msg ( @messages ) {
@@ -352,6 +361,13 @@ WebService::Validator::HTML::W3C could not establish a connection to the URI.
 Should never happen and most likely indicates a problem somewhere but
 on the off chance that WebService::Validator::HTML::W3C is unable to make
 sense of the response from the validator you'll get this error.
+
+=item Result format does not appear to be SOAP|XML
+
+If you've asked for detailed results and the reponse from the validator 
+isn't in the expected format then you'll get this error. Most likely to 
+happen if you ask for SOAP output from a validator that doesn't
+support that format.
 
 =back
 
