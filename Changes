@@ -1,3 +1,7 @@
+0.13 
+    - Added in warnings method to use extra info from SOAP output
+    - Makes stab at catching incorrect output for detailed methods
+
 0.12 Sunday 5th March 2005
     - added in Proxy support courtesy of Carl Vincent <c.a.vincent@ncl.ac.uk>
 
