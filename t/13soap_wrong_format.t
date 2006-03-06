@@ -1,6 +1,6 @@
 # $Id: 06detailed.t 41 2004-05-09 13:28:03Z struan $
 
-use Test::More tests => 6;
+use Test::More tests => 8;
 use WebService::Validator::HTML::W3C;
 
 my $v = WebService::Validator::HTML::W3C->new(
@@ -22,4 +22,6 @@ SKIP: {
     $v->_output('xml');
     is($v->errors, 0, 'Returned 0 for wrong format with XML');
     is($v->validator_error, 'Result format does not appear to be XML', 'Correct error returned for wrong format with XML');
+    is($v->warnings, 0, 'Returned 0 for wrong format with warnings');
+    is($v->validator_error, 'Warnings only available with SOAP output format', 'Correct error returned for warnings with xml output');
 }

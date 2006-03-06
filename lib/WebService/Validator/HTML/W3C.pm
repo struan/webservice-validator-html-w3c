@@ -8,6 +8,7 @@ use LWP::UserAgent;
 use HTTP::Request::Common 'POST';
 use URI::Escape;
 use WebService::Validator::HTML::W3C::Error;
+use WebService::Validator::HTML::W3C::Warning;
 
 __PACKAGE__->mk_accessors(
     qw( http_timeout validator_uri proxy _http_method
@@ -264,6 +265,14 @@ required information.
 If there was a problem processing the detailed information then this method 
 will return 0.
 
+=head2 warnings
+
+ONLY available with the SOAP output from the development Validator at the moment.
+
+    $warnings = $c->warnings();
+
+Works exactly the same as errors only returns an array ref of WebService::Validator::HTML::W3C::Warning objects. In all other respects it's the same.
+
 =cut
 
 sub errors {
@@ -320,6 +329,56 @@ sub errors {
     }
 
     return \@errs;
+}
+
+sub warnings {
+    my $self = shift;
+
+    unless ( $self->_http_method() eq 'GET' ) {
+        warn "You should set detailed when initalising if you intend to use the errors method";
+        $self->_http_method( 'GET' );
+        $self->validate( $self->uri() );
+    }
+
+
+    eval { require XML::XPath; };
+    if ($@) {
+        warn "XML::XPath must be installed in order to get warnings";
+        return undef;
+    }
+
+    my $xp       = XML::XPath->new( xml => $self->_content() );
+
+    my @warnings;
+
+    if ( $self->_output eq 'soap12' ) {
+        if ( ! $xp->findnodes('/env:Envelope') ) {
+            return $self->validator_error( 'Result format does not appear to be SOAP' );
+        }
+        my @messages = $xp->findnodes( '/env:Envelope/env:Body/m:markupvalidationresponse/m:warnings/m:warninglist/m:warning' );
+
+        foreach my $msg ( @messages ) {
+            my ($line, $col, $node);
+            if ( $node = $xp->find( './m:line', $msg ) ) {
+                $line = $node->get_node(1)->getChildNode(1)->getValue;
+            }
+            if ( $node = $xp->find( './m:col', $msg ) ) {
+                $col = $node->get_node(1)->getChildNode(1)->getValue;
+            }
+
+            my $warning = WebService::Validator::HTML::W3C::Warning->new({ 
+                          line => $line,
+                          col  => $col,
+                          msg  => $xp->find( './m:message', $msg )->get_node(1)->getChildNode(1)->getValue,
+                      });
+
+            push @warnings, $warning;
+        }
+        return \@warnings;
+    } else {
+        return $self->validator_error( 'Warnings only available with SOAP output format' );
+
+    }
 }
 
 =head2 validator_error
