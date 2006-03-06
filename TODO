@@ -1,3 +1,2 @@
 allow setting of encoding and dtd type
-check that output format returned is expected and warn if not
 make full use of SOAP output
