@@ -1,4 +1,4 @@
-# $Id: 03invalid.t,v 1.2 2003/11/11 23:15:08 struan Exp $
+# $Id$
 
 use Test::More tests => 4;
 use WebService::Validator::HTML::W3C;
@@ -11,5 +11,5 @@ SKIP: {
     ok ($v, 'object created');
     ok ($v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html'), 'page validated');
     ok (!$v->is_valid, 'page is not valid');
-    is ($v->num_errors, 2, 'correct number of errors');
+    is ($v->num_errors, 1, 'correct number of errors');
 }

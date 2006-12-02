@@ -1,12 +1,12 @@
 # $Id: 06detailed.t 41 2004-05-09 13:28:03Z struan $
 
-use Test::More tests => 8;
+use Test::More tests => 9;
 use WebService::Validator::HTML::W3C;
 
 my $v = WebService::Validator::HTML::W3C->new(
             http_timeout    =>  10,
             detailed        =>  1,
-            output          =>  'soap12',
+            #output          =>  'soap12',
         );
 
 SKIP: {
@@ -17,8 +17,12 @@ SKIP: {
     ok ($v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html'), 
             'page validated');
             
+    $v->_output('soap12');
     is($v->errors, 0, 'Returned 0 for wrong format with SOAP');
     is($v->validator_error, 'Result format does not appear to be SOAP', 'Correct error returned for wrong format with SOAP');
+
+    ok ($v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html'), 
+            'page validated');
     $v->_output('xml');
     is($v->errors, 0, 'Returned 0 for wrong format with XML');
     is($v->validator_error, 'Result format does not appear to be XML', 'Correct error returned for wrong format with XML');

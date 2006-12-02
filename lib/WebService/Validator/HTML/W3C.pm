@@ -16,7 +16,7 @@ __PACKAGE__->mk_accessors(
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
-$VERSION       = 0.13;
+$VERSION       = 0.14;
 $VALIDATOR_URI = 'http://validator.w3.org/check';
 $HTTP_TIMEOUT  = 30;
 
@@ -479,6 +479,9 @@ sub _parse_validator_response {
 
     my $valid         = $response->header('X-W3C-Validator-Status');
     my $valid_err_num = $response->header('X-W3C-Validator-Errors');
+
+    # remove non digits to fix output bug in some versions of validator
+    $valid_err_num =~ s/\D+//g if $valid_err_num;
 
     return ( $valid, $valid_err_num );
 }
