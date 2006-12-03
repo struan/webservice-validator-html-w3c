@@ -184,7 +184,7 @@ sub _validate {
 
     my $request = $self->_get_request( $uri );
 
-    my $response = $ua->simple_request($request);
+    my $response = $ua->request($request);
 
     if ( $response->is_success )    # not an error, we could contact the server
     {
