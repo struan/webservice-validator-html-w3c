@@ -17,10 +17,28 @@ SKIP: {
     is( $v->validator_error(), 'You need to supply a file to validate',
         'you need to supply a file error' );
 
-    ok($v->validate_file( 't/valid.html' ), 'validated valid file');
+    my $r = $v->validate_file( 't/valid.html' );
+
+    unless ($r) {
+        if ($v->validator_error eq "Could not contact validator")
+        {
+            skip "failed to contact validator", 5;
+        }
+    }
+
+    ok($r, 'validated valid file');
     ok($v->is_valid(), 'valid file is valid');
 
-    ok( $v->validate_file( 't/invalid.html' ), 'validated invalid file');
+    $r = $v->validate_file( 't/invalid.html' );
+
+    unless ($r) {
+        if ($v->validator_error eq "Could not contact validator")
+        {
+            skip "failed to contact validator", 3;
+        }
+    }
+
+    ok( $r, 'validated invalid file');
     ok( !$v->is_valid(), 'invalid file is invalid' );
     is( $v->num_errors(), 1, 'correct number of errors');
 }

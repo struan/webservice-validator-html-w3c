@@ -45,10 +45,28 @@ SKIP: {
     is( $v->validator_error(), 'You need to supply markup to validate',
         'you need to supply markup error' );
 
-    ok($v->validate_markup( $valid ), 'validated valid scalar');
+    my $r = $v->validate_markup( $valid );
+
+    unless ($r) {
+        if ($v->validator_error eq "Could not contact validator")
+        {
+            skip "failed to contact validator", 5;
+        }
+    }
+
+    ok($r, 'validated valid scalar');
     ok($v->is_valid(), 'valid scalar is valid');
 
-    ok( $v->validate_markup( $invalid ), 'validated invalid scalar');
+    $r = $v->validate_markup( $invalid );
+
+    unless ($r) {
+        if ($v->validator_error eq "Could not contact validator")
+        {
+            skip "failed to contact validator", 3;
+        }
+    }
+
+    ok($r, 'validated invalid scalar');
     ok(!$v->is_valid(), 'invalid scalar is invalid');
     is( $v->num_errors(), 1, 'correct number of errors');
 }

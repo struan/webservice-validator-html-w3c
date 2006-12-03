@@ -15,8 +15,17 @@ SKIP: {
     skip "XML::XPath not installed", 6 if -f 't/SKIPXPATH';
 
     ok($v, 'object created');
-    ok ($v->validate('http://exo.org.uk/code/www-w3c-validator/warning.html'), 
-            'page validated');
+
+    my $r = $v->validate('http://exo.org.uk/code/www-w3c-validator/warning.html');
+
+    unless ($r) {
+        if ($v->validator_error eq "Could not contact validator")
+        {
+            skip "failed to contact validator", 5;
+        }
+    }
+
+    ok ($r, 'page validated');
             
     my $err = $v->warnings->[0];
     isa_ok($err, 'WebService::Validator::HTML::W3C::Warning');

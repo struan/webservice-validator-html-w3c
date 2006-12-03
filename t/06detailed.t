@@ -1,4 +1,4 @@
-# $Id: 06detailed.t,v 1.4 2004/05/09 13:28:03 struan Exp $
+# $Id$
 
 use Test::More tests => 6;
 use WebService::Validator::HTML::W3C;
@@ -13,8 +13,17 @@ SKIP: {
     skip "XML::XPath not installed", 6 if -f 't/SKIPXPATH';
 
     ok($v, 'object created');
-    ok ($v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html'), 
-            'page validated');
+
+    my $r = $v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html');
+
+    unless ($r) {
+        if ($v->validator_error eq "Could not contact validator")
+        {
+            skip "failed to contact validator", 5;
+        }
+    }
+
+    ok ($r, 'page validated');
             
     my $err = $v->errors->[0];
     isa_ok($err, 'WebService::Validator::HTML::W3C::Error');

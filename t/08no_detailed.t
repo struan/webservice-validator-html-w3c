@@ -19,8 +19,17 @@ SKIP: {
 
 
     ok($v, 'object created');
-    ok ($v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html'), 
-            'page validated');
+
+    my $r = $v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html');
+
+    unless ($r) {
+        if ($v->validator_error eq "Could not contact validator")
+        {
+            skip "failed to contact validator", 6;
+        }
+    }
+
+    ok ($r, 'page validated');
             
     my $err;
     warning_is { $err = $v->errors->[0]; } "You should set detailed when initalising if you intend to use the errors method", "set detailed warning";

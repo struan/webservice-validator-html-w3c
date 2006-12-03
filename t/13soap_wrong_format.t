@@ -4,7 +4,6 @@ use Test::More tests => 9;
 use WebService::Validator::HTML::W3C;
 
 my $v = WebService::Validator::HTML::W3C->new(
-            http_timeout    =>  10,
             detailed        =>  1,
             #output          =>  'soap12',
         );
@@ -14,15 +13,32 @@ SKIP: {
     skip "XML::XPath not installed", 6 if -f 't/SKIPXPATH';
 
     ok($v, 'object created');
-    ok ($v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html'), 
-            'page validated');
+
+    my $r = $v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html');
+
+    unless ($r) {
+        if ($v->validator_error eq "Could not contact validator")
+        {
+            skip "failed to contact validator", 8;
+        }
+    }
+
+    ok ($r, 'page validated');
             
     $v->_output('soap12');
     is($v->errors, 0, 'Returned 0 for wrong format with SOAP');
     is($v->validator_error, 'Result format does not appear to be SOAP', 'Correct error returned for wrong format with SOAP');
 
-    ok ($v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html'), 
-            'page validated');
+    $r = $v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html');
+
+    unless ($r) {
+        if ($v->validator_error eq "Could not contact validator")
+        {
+            skip "failed to contact validator", 5;
+        }
+    }
+
+    ok ($r, 'page validated');
     $v->_output('xml');
     is($v->errors, 0, 'Returned 0 for wrong format with XML');
     is($v->validator_error, 'Result format does not appear to be XML', 'Correct error returned for wrong format with XML');

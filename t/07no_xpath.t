@@ -1,4 +1,4 @@
-# $Id: 07no_xpath.t,v 1.2 2003/11/25 15:16:18 struan Exp $
+# $Id$
 
 use Test::More tests => 3;
 
@@ -20,8 +20,17 @@ BEGIN {
             skip "no internet connection", 3 if -f 't/SKIPLIVE';
 
             ok($v, 'object created');
-            ok($v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html'), 
-                    'page validated');
+
+            my $r = $v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html');
+
+            unless ($r) {
+                if ($v->validator_error eq "Could not contact validator")
+                {
+                    skip "failed to contact validator", 2;
+                }
+            }
+            
+            ok($r, 'page validated');
                     
             ok(!$v->errors(), 'no errors returned if no XML::XPath');
             

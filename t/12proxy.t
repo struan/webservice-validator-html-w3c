@@ -22,7 +22,17 @@ SKIP: {
     } else {
         sleep 1; # just to make proxy is started
         my $v = WebService::Validator::HTML::W3C->new( proxy => $p->url );
-        ok($v->validate('http://exo.org.uk/code/www-w3c-validator/valid.html'), 'validates page');
+
+        my $r = $v->validate('http://exo.org.uk/code/www-w3c-validator/valid.html');
+
+        unless ($r) {
+            if ($v->validator_error eq "Could not contact validator")
+            {
+                skip "failed to contact validator", 2;
+            }
+        }
+
+        ok($r, 'validates page');
         ok($v->is_valid, 'page is valid');
         wait;
     }
