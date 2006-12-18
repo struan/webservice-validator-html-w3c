@@ -1,3 +1,6 @@
+0.15 Monday 18th December 2006
+   - Updated tests so they don't fail if the validator is unreachable
+
 0.14 Saturday 4th November 2006
     - Updated wrong format error tests as non beta validator now supports SOAP
     - Removes non digits from header error count to work round validator bug

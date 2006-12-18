@@ -16,7 +16,7 @@ __PACKAGE__->mk_accessors(
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
-$VERSION       = 0.14;
+$VERSION       = 0.15;
 $VALIDATOR_URI = 'http://validator.w3.org/check';
 $HTTP_TIMEOUT  = 30;
 
