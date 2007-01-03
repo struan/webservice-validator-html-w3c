@@ -1,3 +1,6 @@
+0.16
+  - Added in custom user agent support courtesy of Chris Dolan <cdolan@cpan.org>
+
 0.15 Monday 18th December 2006
    - Updated tests so they don't fail if the validator is unreachable
 

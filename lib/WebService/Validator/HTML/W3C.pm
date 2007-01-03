@@ -11,7 +11,7 @@ use WebService::Validator::HTML::W3C::Error;
 use WebService::Validator::HTML::W3C::Warning;
 
 __PACKAGE__->mk_accessors(
-    qw( http_timeout validator_uri proxy _http_method
+    qw( http_timeout validator_uri proxy ua _http_method
       is_valid num_errors uri _content _output ) );
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
@@ -72,6 +72,10 @@ object like so:
 
 The URI of the validator to use.  By default this accesses the W3Cs validator at http://validator.w3.org/check. If you have a local installation of the validator ( recommended if you wish to do a lot of testing ) or wish to use a validator at another location then you can use this option. Please note that you need to use the full path to the validator cgi.
 
+=item ua    
+
+The user agent to use. Should be an LWP::UserAgent object or something that provides the same interface. If this argument is provided, the C<http_timeout> and C<proxy> arguments are ignored.
+
 =item http_timeout
 
 How long (in seconds) to wait for the HTTP connection to timeout when
@@ -112,6 +116,7 @@ sub _init {
 
     $self->http_timeout( $args{http_timeout}   || $HTTP_TIMEOUT );
     $self->validator_uri( $args{validator_uri} || $VALIDATOR_URI );
+    $self->ua( $args{ua} );
     $self->_http_method( $args{detailed} ? 'GET' : 'HEAD' );
     $self->_output( $args{output} || 'xml' );
     $self->proxy( $args{proxy} || '' );
@@ -177,10 +182,13 @@ sub _validate {
 
     my $uri_orig = $uri;
 
-    my $ua = LWP::UserAgent->new( agent   => __PACKAGE__ . "/$VERSION",
+    my $ua = $self->ua;
+    if ( ! $ua ) {
+       $ua = LWP::UserAgent->new( agent   => __PACKAGE__ . "/$VERSION",
                                   timeout => $self->http_timeout );
 
-    if ( $self->proxy ) { $ua->proxy( 'http', $self->proxy ); }
+       if ( $self->proxy ) { $ua->proxy( 'http', $self->proxy ); }
+    }
 
     my $request = $self->_get_request( $uri );
 
@@ -555,6 +563,10 @@ with patches ;).
 
 To the various people on the code review ladder mailing list who 
 provided useful suggestions.
+
+Carl Vincent provided a patch to allow for proxy support.
+
+Chris Dolan provided a patch to allow for custom user agents.
 
 =head1 SUPPORT
 
