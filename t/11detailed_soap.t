@@ -30,8 +30,8 @@ SKIP: {
     my $err = $v->errors->[0];
     isa_ok($err, 'WebService::Validator::HTML::W3C::Error');
     is($err->line, 11, 'Correct line number');
-    is($err->col, 6, 'Correct column');
-    like($err->msg, qr/end tag for "div" omitted, but OMITTAG NO was specified/,
+    is($err->col, 7, 'Correct column');
+    like($err->msg, qr/XML Parsing Error:  Opening and ending tag mismatch: div/,
                     'Correct message');
     
 }

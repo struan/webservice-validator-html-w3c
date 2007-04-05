@@ -9,8 +9,8 @@ my $v = WebService::Validator::HTML::W3C->new(
         );
 
 SKIP: {
-    skip "no internet connection", 6 if -f 't/SKIPLIVE';
-    skip "XML::XPath not installed", 6 if -f 't/SKIPXPATH';
+    skip "no internet connection", 9 if -f 't/SKIPLIVE';
+    skip "XML::XPath not installed", 9 if -f 't/SKIPXPATH';
 
     ok($v, 'object created');
 

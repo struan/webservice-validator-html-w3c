@@ -22,6 +22,12 @@ SKIP: {
     
     ok(!$v->validate('http://exo.org.uk/code/www-w3c-validator/valid.html'), 
         'validation fails');
+
+    if ($v->validator_error eq "Could not contact validator")
+    {
+        skip "failed to contact bad validator", 1;
+    }
+
     is($v->validator_error, 'Not a W3C Validator or Bad URI', 
         'not a W3C validator error');
 }

@@ -1,3 +1,6 @@
+0.17 Saturday 13th January 2007
+ - skip the right number of test of no xpath for 13soap_wrong_format.t
+
 0.16 Saturday 13th January 2007
   - Added in custom user agent support courtesy of Chris Dolan <cdolan@cpan.org>
 

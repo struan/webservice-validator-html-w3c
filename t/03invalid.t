@@ -6,7 +6,7 @@ use WebService::Validator::HTML::W3C;
 my $v = WebService::Validator::HTML::W3C->new( );
 
 SKIP: {
-    skip "no internet connection", 4 if -f 't/SKIPLIVE';
+    skip "no internet connection", 3 if -f 't/SKIPLIVE';
 
     ok ($v, 'object created');
 
