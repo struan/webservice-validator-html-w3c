@@ -1,3 +1,8 @@
+0.18 Thursday 5th April 2007
+ - skip the right number of tests for 03invalid.t
+ - make 04bad_validtor.t a bit more robust of can't contact fake validator
+ - update 11detailed_soap.t to reflect changes in validator error messages
+
 0.17 Saturday 13th January 2007
  - skip the right number of test of no xpath for 13soap_wrong_format.t
 
