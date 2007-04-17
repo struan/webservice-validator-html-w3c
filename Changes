@@ -1,3 +1,8 @@
+0.19 Tuesday 17th April 2007
+ - updated t/14warnings.t in line with changed validator error
+ - also make test a little less likely to break in future
+ - added in examples directory for cpants game related reasons
+
 0.18 Thursday 5th April 2007
  - skip the right number of tests for 03invalid.t
  - make 04bad_validtor.t a bit more robust of can't contact fake validator
