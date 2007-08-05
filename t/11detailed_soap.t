@@ -4,7 +4,6 @@ use Test::More tests => 6;
 use WebService::Validator::HTML::W3C;
 
 my $v = WebService::Validator::HTML::W3C->new(
-            validator_uri   =>  'http://qa-dev.w3.org/wmvs/HEAD/check',
             http_timeout    =>  10,
             detailed        =>  1,
             output          =>  'soap12',
