@@ -203,8 +203,7 @@ sub _validate {
 
 		$self->_response( $response );
 		
-        my $res =
-          $self->_parse_validator_response();
+        my $res = $self->_parse_validator_response();
         $self->_content( $response->content() )
           if $self->_http_method() !~ /HEAD/;
 
