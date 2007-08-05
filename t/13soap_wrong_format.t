@@ -9,7 +9,7 @@ my $v = WebService::Validator::HTML::W3C->new(
         );
 
 SKIP: {
-    skip "no internet connection", 9 if -f 't/SKIPLIVE';
+    skip "TEST_AUTHOR environment variable not defined", 9 unless $ENV{ 'TEST_AUTHOR' };
     skip "XML::XPath not installed", 9 if -f 't/SKIPXPATH';
 
     ok($v, 'object created');

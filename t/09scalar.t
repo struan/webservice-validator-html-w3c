@@ -35,7 +35,7 @@ my $v = WebService::Validator::HTML::W3C->new(
         );
 
 SKIP: {
-    skip "no internet connection", 8 if -f 't/SKIPLIVE';
+    skip "TEST_AUTHOR environment variable not defined", 8 unless $ENV{ 'TEST_AUTHOR' };
 
     ok($v, 'object created');
 

@@ -6,7 +6,9 @@
 \.bak$
 ^MANIFEST\.SKIP$
 ^output.xml
+^soap.xml
 CVS
 ^TODO
 \.svn
 ^old_releases
+^.DS_Store

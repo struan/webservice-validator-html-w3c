@@ -13,10 +13,9 @@ SKIP: {
                 http_timeout    =>  10,
             );
 
-    skip "no internet connection", 7 if -f 't/SKIPLIVE';
+    skip "TEST_AUTHOR environment variable not defined", 7 unless $ENV{ 'TEST_AUTHOR'};
     skip "Test:Warn not install", 7 if -f 't/SKIPWARN';
     skip "XML::XPath not installed", 7 if -f 't/SKIPXPATH';
-
 
     ok($v, 'object created');
 

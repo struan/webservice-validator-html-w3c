@@ -5,6 +5,7 @@ use WebService::Validator::HTML::W3C;
 eval "use HTTP::Proxy 0.16";
 
 SKIP: {
+	skip "TEST_AUTHOR environment variable not defined", 2 unless $ENV{ 'TEST_AUTHOR' };
     skip "HTTP::Proxy required for testing proxy", 2 if $@;
     my $test = Test::Builder->new;
 
