@@ -20,5 +20,5 @@ SKIP: {
     }
 
     ok (!$v->is_valid, 'page is not valid');
-    is ($v->num_errors, 1, 'correct number of errors');
+    is ($v->num_errors, 4, 'correct number of errors');
 }

@@ -31,7 +31,7 @@ SKIP: {
     isa_ok($err, 'WebService::Validator::HTML::W3C::Warning');
     is($err->line, undef, 'Correct line number');
     is($err->col, undef, 'Correct column');
-    like($err->msg, qr/No DOCTYPE found! Attempting validation with /,
+    like($err->msg, qr/Unable to Determine Parse Mode/,
                     'Correct message');
     
 }
