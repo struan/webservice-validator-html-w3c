@@ -1,3 +1,9 @@
+0.20 Sunday 5th August 2007
+ - updated tests to use hardcoded responses where possible
+   to stop failures caused by changed error messages
+ - full test suite only run if $ENV{'TEST_AUTHOR'} set
+ - some internals refactoring to support test changes
+
 0.19 Tuesday 17th April 2007
  - updated t/14warnings.t in line with changed validator error
  - also make test a little less likely to break in future

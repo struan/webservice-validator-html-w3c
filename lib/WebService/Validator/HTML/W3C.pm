@@ -16,7 +16,7 @@ __PACKAGE__->mk_accessors(
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
-$VERSION       = 0.19;
+$VERSION       = 0.20;
 $VALIDATOR_URI = 'http://validator.w3.org/check';
 $HTTP_TIMEOUT  = 30;
 
@@ -559,7 +559,10 @@ module is only guaranteed to work with the currently stable version of the
 validator. It will most likely work with any Beta versions but don't rely 
 on it.
 
-If in doubt please try and run the test suite before reporting bugs. 
+If in doubt please try and run the test suite before reporting bugs. Note
+that in order to run tests against the validator service you will need to
+have a connection to the internet and also set an environment variable called
+TEST_AUTHOR.
 
 That said I'm very happy to hear about bugs. All the more so if they come
 with patches ;).
