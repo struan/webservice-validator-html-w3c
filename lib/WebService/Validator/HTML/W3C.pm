@@ -182,6 +182,8 @@ sub _validate {
 
     my $uri_orig = $uri;
 
+	$self->uri($uri_orig);
+
     my $ua = $self->ua;
     if ( ! $ua ) {
        $ua = LWP::UserAgent->new( agent   => __PACKAGE__ . "/$VERSION",
@@ -201,7 +203,7 @@ sub _validate {
 
 		$self->_response( $response );
 		
-        my ( $valid, $valid_err_num ) =
+        my $res =
           $self->_parse_validator_response();
         $self->_content( $response->content() )
           if $self->_http_method() !~ /HEAD/;
@@ -209,24 +211,11 @@ sub _validate {
         # we know the validator has been able to (in)validate if
         # $self->valid is not NULL
 
-        if ( $valid and $valid_err_num ) {
-            $self->is_valid(0);
-            $self->num_errors($valid_err_num);
-            $self->uri($uri_orig);
-            return 1;
-        }
-        elsif ( !defined $valid ) {
-            return $self->validator_error('Not a W3C Validator or Bad URI');
-        }
-        elsif ( $valid =~ /\bvalid\b/i ) {
-            $self->is_valid(1);
-            $self->num_errors($valid_err_num);
-            $self->uri($uri_orig);
-            return 1;
-        }
-
-        return $self->validator_error(
-                            'Did not get a sensible result from the Validator');
+		if ( $res ) {
+			return 1;
+		} else {
+			return 0;
+		}
     }
     else {
         return $self->validator_error('Could not contact validator');
@@ -493,7 +482,22 @@ sub _parse_validator_response {
     # remove non digits to fix output bug in some versions of validator
     $valid_err_num =~ s/\D+//g if $valid_err_num;
 
-    return ( $valid, $valid_err_num );
+    if ( $valid and $valid_err_num ) {
+        $self->is_valid(0);
+        $self->num_errors($valid_err_num);
+        return 1;
+    }
+    elsif ( !defined $valid ) {
+        return $self->validator_error('Not a W3C Validator or Bad URI');
+    }
+    elsif ( $valid =~ /\bvalid\b/i ) {
+        $self->is_valid(1);
+        $self->num_errors($valid_err_num);
+        return 1;
+    }
+
+    return $self->validator_error(
+                        'Did not get a sensible result from the Validator');
 }
 
 sub _get_request {
