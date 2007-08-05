@@ -12,7 +12,7 @@ use WebService::Validator::HTML::W3C::Warning;
 
 __PACKAGE__->mk_accessors(
     qw( http_timeout validator_uri proxy ua _http_method
-      is_valid num_errors uri _content _output ) );
+      is_valid num_errors uri _content _output _response ) );
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
@@ -199,8 +199,10 @@ sub _validate {
 
         # set both valid and error number according to response
 
+		$self->_response( $response );
+		
         my ( $valid, $valid_err_num ) =
-          $self->_parse_validator_response($response);
+          $self->_parse_validator_response();
         $self->_content( $response->content() )
           if $self->_http_method() !~ /HEAD/;
 
@@ -483,7 +485,7 @@ sub _construct_uri {
 
 sub _parse_validator_response {
     my $self     = shift;
-    my $response = shift;
+    my $response = $self->_response();
 
     my $valid         = $response->header('X-W3C-Validator-Status');
     my $valid_err_num = $response->header('X-W3C-Validator-Errors');
