@@ -1,3 +1,6 @@
+0.21 Tuesday 7th August 2007
+ - updated tests to fix failures when XML::XPath not installed due to
+   trying to skip wrong number of tests. 
 0.20 Sunday 5th August 2007
  - updated tests to use hardcoded responses where possible
    to stop failures caused by changed error messages
