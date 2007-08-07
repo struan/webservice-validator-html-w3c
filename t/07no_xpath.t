@@ -3,14 +3,16 @@
 use Test::More;
 
 BEGIN {
+	my $num_tests = 2;
+	
 	if ( $ENV{ 'TEST_AUTHOR' } ) {
-		plan tests => 3;
-	} else {
-		plan tests => 2;
-	}
+		$num_tests = 3;
+	} 
+	
+	plan tests => $num_tests;
 	
     SKIP: {
-        skip "no Test::Without::Module", 3, if -f 't/SKIPWITHOUT';
+        skip "no Test::Without::Module", $num_tests, if -f 't/SKIPWITHOUT';
 
         require Test::Without::Module;
         import Test::Without::Module qw( XML::XPath );
