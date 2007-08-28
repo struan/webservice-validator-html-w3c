@@ -1,3 +1,6 @@
+1.0 Tuesday 28th August 2007
+ - Fixed some typos - thanks to William McKee for pointing them out
+   Bumped version number to 1 as it seems pretty stable
 0.21 Tuesday 7th August 2007
  - updated tests to fix failures when XML::XPath not installed due to
    trying to skip wrong number of tests. 
