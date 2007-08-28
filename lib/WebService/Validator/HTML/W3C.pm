@@ -267,9 +267,10 @@ will return 0.
 
 ONLY available with the SOAP output from the development Validator at the moment.
 
-    $warnings = $c->warnings();
+    $warnings = $v->warnings();
 
-Works exactly the same as errors only returns an array ref of WebService::Validator::HTML::W3C::Warning objects. In all other respects it's the same.
+Works exactly the same as errors only returns an array ref of 
+WebService::Validator::HTML::W3C::Warning objects. In all other respects it's the same.
 
 =cut
 
@@ -333,7 +334,7 @@ sub warnings {
     my $self = shift;
 
     unless ( $self->_http_method() eq 'GET' ) {
-        warn "You should set detailed when initalising if you intend to use the errors method";
+        warn "You should set detailed when initalising if you intend to use the warnings method";
         $self->_http_method( 'GET' );
         $self->validate( $self->uri() );
     }
