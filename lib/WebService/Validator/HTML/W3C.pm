@@ -591,6 +591,8 @@ L<http://www.exo.org.uk/code/>
 
 Copyright (C) 2003-2005 Struan Donald. All rights reserved.
 
+=head1 LICENSE
+
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.
 
