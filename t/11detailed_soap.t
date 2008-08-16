@@ -3,10 +3,10 @@
 use Test::More;
 use WebService::Validator::HTML::W3C;
 
-my $test_num = 5;
+my $test_num = 7;
 
 if ( $ENV{ 'TEST_AUTHOR' } ) {
-	 $test_num = 6;
+	 $test_num = 8;
 }
 
 plan tests => $test_num;
@@ -51,6 +51,23 @@ SKIP: {
 							<m:line>11</m:line>
 							<m:col>6</m:col>
 							<m:message>end tag for "div" omitted, but OMITTAG NO was specified</m:message>
+                            <m:messageid>70</m:messageid>
+                            <m:explanation>  <![CDATA[
+                                  <p class="helpwanted">
+                  <a
+                    href="http://validator.w3.org/feedback.html?uri=http%3A%2F%2Fexo.org.uk%2Fcode%2Fwww-w3c-validator%2Finvalid.html;errmsg_id=70#errormsg"
+                title="Suggest improvements on this error message through our feedback channels" 
+                  >&#x2709;</a>
+                </p>
+
+                <div class="ve mid-70">
+                  <p>
+                  You may have neglected to close an element, or perhaps you meant to 
+                  "self-close" an element, that is, ending it with "/&gt;" instead of "&gt;".
+                </p>
+            </div>
+                              ]]>
+                            </m:explanation>
 						</m:error>
 			        </m:errorlist>
 			    </m:errors>
@@ -70,7 +87,10 @@ SKIP: {
     isa_ok($err, 'WebService::Validator::HTML::W3C::Error');
     is($err->line, 11, 'Correct line number');
     is($err->col, 6, 'Correct column');
+    is($err->msgid, 70, 'Correct messageid' );
     like($err->msg, qr/end tag for "div" omitted, but OMITTAG NO was specified/,
                     'Correct message');
+    like($err->explanation, qr/You may have neglected to close an element, or perhaps you meant to/,
+                    'Correct exmplanation');
     
 }

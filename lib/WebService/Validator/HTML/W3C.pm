@@ -318,9 +318,11 @@ sub errors {
 
        foreach my $msg ( @messages ) {
            my $err = WebService::Validator::HTML::W3C::Error->new({ 
-                          line => $xp->find( './m:line', $msg )->get_node(1)->getChildNode(1)->getValue,
-                          col  => $xp->find( './m:col', $msg )->get_node(1)->getChildNode(1)->getValue,
-                          msg  => $xp->find( './m:message', $msg )->get_node(1)->getChildNode(1)->getValue,
+                          line          => $xp->find( './m:line', $msg )->get_node(1)->getChildNode(1)->getValue,
+                          col           => $xp->find( './m:col', $msg )->get_node(1)->getChildNode(1)->getValue,
+                          msg           => $xp->find( './m:message', $msg )->get_node(1)->getChildNode(1)->getValue,
+                          msgid         => $xp->find( './m:messageid', $msg )->get_node(1)->getChildNode(1)->getValue,
+                          explanation   => $xp->find( './m:explanation', $msg )->get_node(1)->getChildNode(1)->getValue,
                       });
 
             push @errs, $err;
