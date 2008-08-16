@@ -56,7 +56,7 @@ SKIP: {
 			    <m:warnings>
 			        <m:warningcount>1</m:warningcount>
 			        <m:warninglist>
-			  			<m:warning><m:message>Unable to Determine Parse Mode</m:message></m:warning>
+			  			<m:warning><m:message>No DOCTYPE found! Attempting validation with XHTML 1.0</m:message></m:warning>
 			        </m:warninglist>
 			    </m:warnings>
 			</m:markupvalidationresponse>
@@ -69,7 +69,7 @@ SKIP: {
     isa_ok($err, 'WebService::Validator::HTML::W3C::Warning');
     is($err->line, undef, 'Correct line number');
     is($err->col, undef, 'Correct column');
-    like($err->msg, qr/Unable to Determine Parse Mode/,
+    like($err->msg, qr/No DOCTYPE found! Attempting validation with XHTML 1.0/,
                     'Correct message');
     
 }
