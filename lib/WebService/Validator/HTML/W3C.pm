@@ -37,7 +37,7 @@ WebService::Validator::HTML::W3C - Access the W3Cs online HTML validator
             printf ("%s is valid\n", $v->uri);
         } else {
             printf ("%s is not valid\n", $v->uri);
-            foreach $error ( @{$v->errors} ) {
+            foreach my $error ( @{$v->errors} ) {
                 printf("%s at line %d\n", $error->msg,
                                           $error->line);
             }
@@ -93,9 +93,9 @@ An HTTP proxy to use when communicating with the validation service.
 
 Controls which output format is used. Can be either xml or soap12.
 
-At the moment the default is XML as this is the only one supported by the Validator. However in the future it is moving to using SOAP for the detailed reporting.
+The default is soap12 as the XML format is deprecated and is likely to be removed in the future.
 
-The default will always work so unless you're using a development version of the Validator you can safely ignore this.
+The default will always work so unless you're using a locally installed Validator you can safely ignore this.
 
 =back 
 
@@ -118,7 +118,7 @@ sub _init {
     $self->validator_uri( $args{validator_uri} || $VALIDATOR_URI );
     $self->ua( $args{ua} );
     $self->_http_method( $args{detailed} ? 'GET' : 'HEAD' );
-    $self->_output( $args{output} || 'xml' );
+    $self->_output( $args{output} || 'soap12' );
     $self->proxy( $args{proxy} || '' );
 }
 

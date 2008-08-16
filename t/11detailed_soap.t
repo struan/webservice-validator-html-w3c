@@ -28,7 +28,7 @@ SKIP: {
 	    unless ($r) {
 	        if ($v->validator_error eq "Could not contact validator")
 	        {
-	            skip "failed to contact validator", 5;
+	            skip "failed to contact validator", 6;
 	        }
 	    }
 

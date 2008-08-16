@@ -5,7 +5,7 @@ use WebService::Validator::HTML::W3C;
 
 my $v = WebService::Validator::HTML::W3C->new(
             detailed        =>  1,
-            #output          =>  'soap12',
+            output          =>  'xml',
         );
 
 SKIP: {
