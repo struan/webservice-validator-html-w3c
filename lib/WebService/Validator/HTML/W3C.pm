@@ -141,6 +141,14 @@ Validate a file by uploading it to the W3C Validator. NB This has only been test
 
 Validate a scalar containing HTML. 
 
+=head2 Alternate interface
+
+You can also pass a hash in to specify what you wish to validate. This is provided to ensure compatability with the CSS validator module.
+
+	$v->validate( uri => 'http://example.com/' );
+	$v->validate( string => $markup );
+	$v->validate( file => './file.html' );
+	
 =cut
 
 sub validate_file {
@@ -165,7 +173,23 @@ sub validate_markup {
 
 sub validate {
     my $self = shift;
-    my $uri = shift;
+
+	my ( %opts, $uri );
+	if ( scalar( @_ ) > 1 ) {
+		%opts = @_;
+		
+		if ( $opts{ 'uri' } ) {
+			$uri = $opts{ 'uri' };	
+		} elsif ( $opts{ 'string' } ) {
+			return $self->validate_markup( $opts{ 'string' } );
+		} elsif( $opts{ 'file' } ) {
+			return $self->validate_file( $opts{ 'file' } );
+		} else {
+			return self->validator_error( "You need to provide a uri, string or file to validate" );
+		}
+	} else {
+	    $uri = shift;		
+	}
 
     return $self->validator_error("You need to supply a URI to validate")
       unless $uri;
@@ -437,6 +461,11 @@ isn't in the expected format then you'll get this error. Most likely to
 happen if you ask for SOAP output from a validator that doesn't
 support that format.
 
+=item You need to provide a uri, string or file to validate
+
+You've passed in a hash ( or in fact more than one argument ) to validate
+but the hash does not contain one of the three expected keys.
+
 =back
 
 =cut
@@ -551,6 +580,9 @@ the W3Cs DTDs. You have to fetch the relevant DTDs and so on.
 There is also the L<HTML::Parser> based L<HTML::Lint> which mostly checks for 
 known tags rather than XML/HTML validity.
 
+L<WebService::Validator::CSS::W3C> provides the same functionality as this module
+for the W3C's CSS validator. 
+
 =head1 IMPORTANT
 
 This module is not in any way associated with the W3C so please do not 
@@ -578,6 +610,9 @@ TEST_AUTHOR.
 That said I'm very happy to hear about bugs. All the more so if they come
 with patches ;).
 
+Please use http://rt.cpan.org/ for filing bug reports, and indeed feature
+requests.
+
 =head1 THANKS
 
 To the various people on the code review ladder mailing list who 
@@ -586,6 +621,8 @@ provided useful suggestions.
 Carl Vincent provided a patch to allow for proxy support.
 
 Chris Dolan provided a patch to allow for custom user agents.
+
+Matt Ryder provided a patch for support of the explanations in the SOAP output. 
 
 =head1 SUPPORT
 
@@ -599,7 +636,7 @@ L<http://www.exo.org.uk/code/>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2003-2005 Struan Donald. All rights reserved.
+Copyright (C) 2003-2008 Struan Donald. All rights reserved.
 
 =head1 LICENSE
 

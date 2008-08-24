@@ -1,6 +1,6 @@
 # $Id$
 
-use Test::More tests => 3;
+use Test::More tests => 7;
 use WebService::Validator::HTML::W3C;
 use HTTP::Response;
 
@@ -9,7 +9,7 @@ my $v = WebService::Validator::HTML::W3C->new( );
 ok ($v, 'object created');
 
 if ( $ENV{ 'TEST_AUTHOR' } ) {
-	my $r = $v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html');
+	my $r = $v->validate( uri => 'http://exo.org.uk/code/www-w3c-validator/invalid.html' );
 
 	unless ($r) {
 	    if ($v->validator_error eq "Could not contact validator")
@@ -40,3 +40,43 @@ END
 
 ok (!$v->is_valid, 'page is not valid');
 is ($v->errorcount, 4, 'correct number of errors');
+
+SKIP: {
+    skip "TEST_AUTHOR environment variable not defined", 4 unless $ENV{ 'TEST_AUTHOR' };
+	
+	my $valid = qq{<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+	<title></title>
+	</head>
+	<body>
+
+	</body>
+	</html>
+	};
+	
+	my $r = $v->validate( string => $valid );
+
+    unless ($r) {
+        if ($v->validator_error eq "Could not contact validator")
+        {
+            skip "failed to contact validator", 2;
+        }
+    }
+
+    ok($r, 'validated valid scalar');
+    ok($v->is_valid(), 'valid scalar is valid');
+
+    $r = $v->validate( file => 't/valid.html' );
+
+    unless ($r) {
+        if ($v->validator_error eq "Could not contact validator")
+        {
+            skip "failed to contact validator", 2;
+        }
+    }
+
+    ok($r, 'validated valid file');
+    ok($v->is_valid(), 'valid file is valid');
+}
