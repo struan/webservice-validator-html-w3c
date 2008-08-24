@@ -1,12 +1,16 @@
-0.23
- - add in msgid and explanation methods to Error object
+0.23 Sunday 24th August 2008
+ - add in msgid and explanation methods to Error object partly courtesy of Matt Ryder <mattryder@iinet.net.au>
  - update author tests in line with changes to validator output
  - made soap12 the default output format.
+ - added few things to make interface more comaptible with CSS validator module
+
 0.22 Tuesday 28th August 2007
  - Fixed some typos - thanks to William McKee for pointing them out
+
 0.21 Tuesday 7th August 2007
  - updated tests to fix failures when XML::XPath not installed due to
    trying to skip wrong number of tests. 
+   
 0.20 Sunday 5th August 2007
  - updated tests to use hardcoded responses where possible
    to stop failures caused by changed error messages
