@@ -241,6 +241,10 @@ Returns the URI of the last page on which validation succeeded.
 
 Returns the number of errors that the validator encountered.
 
+=head2 errorcount
+
+Synonym for num_errors. There to match CSS Validator interface.
+
 =head2 errors
 
     $errors = $v->errors();
@@ -330,6 +334,10 @@ sub errors {
     }
 
     return \@errs;
+}
+
+sub errorcount {
+	shift->num_errors;
 }
 
 sub warnings {
