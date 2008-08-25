@@ -1,3 +1,5 @@
+0.24 Monday 25th August 2008
+ - fix 06detailed.t which was failing when not run under TEST_AUTHOR :(
 0.23 Sunday 24th August 2008
  - add in msgid and explanation methods to Error object partly courtesy of Matt Ryder <mattryder@iinet.net.au>
  - update author tests in line with changes to validator output
