@@ -49,7 +49,7 @@ SKIP: {
 			        <m:errorlist>
 						<m:error>
 							<m:line>11</m:line>
-							<m:col>6</m:col>
+							<m:col>7</m:col>
 							<m:message>end tag for "div" omitted, but OMITTAG NO was specified</m:message>
                             <m:messageid>70</m:messageid>
                             <m:explanation>  <![CDATA[
@@ -86,7 +86,7 @@ SKIP: {
     my $err = $v->errors->[0];
     isa_ok($err, 'WebService::Validator::HTML::W3C::Error');
     is($err->line, 11, 'Correct line number');
-    is($err->col, 6, 'Correct column');
+    is($err->col, 7, 'Correct column');
     is($err->msgid, 70, 'Correct messageid' );
     like($err->msg, qr/end tag for "div" omitted, but OMITTAG NO was specified/,
                     'Correct message');

@@ -34,7 +34,7 @@ SKIP: {
     warning_is { $err = $v->errors->[0]; } "You should set detailed when initalising if you intend to use the errors method", "set detailed warning";
     isa_ok($err, 'WebService::Validator::HTML::W3C::Error');
     is($err->line, 11, 'Correct line number');
-    is($err->col, 6, 'Correct column');
+    is($err->col, 7, 'Correct column');
     like($err->msg, qr/end tag for "div" omitted, but OMITTAG NO was specified/,
                     'Correct message');
     
