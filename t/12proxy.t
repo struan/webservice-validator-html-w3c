@@ -13,7 +13,7 @@ SKIP: {
     $test->use_numbers(0);
     $test->no_ending(1);
 
-    my $p = HTTP::Proxy->new( port => 3128, max_connections => 1 );
+    my $p = HTTP::Proxy->new( port => 3228, max_connections => 1 );
     $p->init;
 
     my $pid = fork;
