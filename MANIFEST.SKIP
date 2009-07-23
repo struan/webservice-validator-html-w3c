@@ -10,5 +10,6 @@
 CVS
 ^TODO
 \.svn
+\.git
 ^old_releases
 ^.DS_Store
