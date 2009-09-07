@@ -3,11 +3,14 @@
 use Test::More;
 
 BEGIN {
-	my $num_tests = 2;
+
+	my $num_tests = 3;
 	
 	if ( $ENV{ 'TEST_AUTHOR' } ) {
-		$num_tests = 3;
+		$num_tests = 4;
 	} 
+
+    # XML::XPath must be installed in order to get detailed errors
 	
 	plan tests => $num_tests;
 	
@@ -68,6 +71,14 @@ BEGIN {
 			);
 		}
                    
-        ok(!$v->errors(), 'no errors returned if no XML::XPath');
+        {
+            my $warning = '';
+            local $SIG{__WARN__} = sub { $warning = shift; $warning =~ s/ at .*\n$//; };
+            $v->errors();
+            is $warning, "XML::XPath must be installed in order to get detailed errors", "missing XML::XPath error";
+
+            ok(!$v->errors(), 'no errors returned if no XML::XPath');
+        }
+
     }
 }
