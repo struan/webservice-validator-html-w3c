@@ -1,3 +1,6 @@
+0.26 Monday 7th September 2009
+ - Suppress and test warning in no XML::XPath installed RT #47960
+
 0.25 Thursday 23rd August 2009
  - change proxy port in test to stop clash with default squid port
  - update columns in detailed output tests run under TST_AUTHOR to match validator change RT #47960
