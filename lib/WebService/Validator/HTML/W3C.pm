@@ -391,12 +391,14 @@ sub warnings {
         my @messages = $xp->findnodes( '/env:Envelope/env:Body/m:markupvalidationresponse/m:warnings/m:warninglist/m:warning' );
 
         foreach my $msg ( @messages ) {
-            my ($line, $col, $node);
-            if ( $node = $xp->find( './m:line', $msg ) ) {
-                $line = $node->get_node(1)->getChildNode(1)->getValue;
+            my ($line, $col);
+
+            if( ($line = $xp->findvalue('./m:line', $msg)) eq "") {
+                $line = undef;
             }
-            if ( $node = $xp->find( './m:col', $msg ) ) {
-                $col = $node->get_node(1)->getChildNode(1)->getValue;
+
+            if( ($col = $xp->findvalue('./m:col', $msg)) eq "") {
+                $col = undef;
             }
 
             my $warning = WebService::Validator::HTML::W3C::Warning->new({ 
