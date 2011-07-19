@@ -5,7 +5,7 @@ package WebService::Validator::HTML::W3C::Warning;
 use strict;
 use base qw(Class::Accessor);
 
-__PACKAGE__->mk_accessors( qw( line col msg ) );
+__PACKAGE__->mk_accessors( qw( line col msg source ) );
 
 1;
 
