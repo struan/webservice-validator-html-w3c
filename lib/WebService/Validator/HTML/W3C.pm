@@ -12,7 +12,7 @@ use WebService::Validator::HTML::W3C::Warning;
 
 __PACKAGE__->mk_accessors(
     qw( http_timeout validator_uri proxy ua _http_method
-      is_valid num_errors uri _content _output _response ) );
+      is_valid num_errors num_warnings uri _content _output _response ) );
 
 use vars qw( $VERSION $VALIDATOR_URI $HTTP_TIMEOUT );
 
@@ -365,6 +365,10 @@ sub errorcount {
 	shift->num_errors;
 }
 
+sub warningcount {
+    shift->num_warnings;
+}
+
 sub warnings {
     my $self = shift;
 
@@ -521,6 +525,7 @@ sub _parse_validator_response {
 
     my $valid         = $response->header('X-W3C-Validator-Status');
     my $valid_err_num = $response->header('X-W3C-Validator-Errors');
+    $self->num_warnings($response->header('X-W3C-Validator-Warnings'));
 
     # remove non digits to fix output bug in some versions of validator
     $valid_err_num =~ s/\D+//g if $valid_err_num;
