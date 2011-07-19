@@ -351,6 +351,7 @@ sub errors {
                           msg           => $xp->find( './m:message', $msg )->get_node(1)->getChildNode(1)->getValue,
                           msgid         => $xp->find( './m:messageid', $msg )->get_node(1)->getChildNode(1)->getValue,
                           explanation   => $xp->find( './m:explanation', $msg )->get_node(1)->getChildNode(1)->getValue,
+                          source        => $xp->find( './m:source', $msg )->get_node(1)->getChildNode(1)->getValue,
                       });
 
             push @errs, $err;
@@ -402,9 +403,10 @@ sub warnings {
             }
 
             my $warning = WebService::Validator::HTML::W3C::Warning->new({ 
-                          line => $line,
-                          col  => $col,
-                          msg  => $xp->find( './m:message', $msg )->get_node(1)->getChildNode(1)->getValue,
+                          line   => $line,
+                          col    => $col,
+                          msg    => $xp->find( './m:message', $msg )->get_node(1)->getChildNode(1)->getValue,
+                          source => $xp->find( './m:source', $msg )->get_node(1)->getChildNode(1)->getValue,
                       });
 
             push @warnings, $warning;
