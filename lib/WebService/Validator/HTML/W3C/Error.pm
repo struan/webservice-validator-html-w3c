@@ -5,7 +5,7 @@ package WebService::Validator::HTML::W3C::Error;
 use strict;
 use base qw(Class::Accessor);
 
-__PACKAGE__->mk_accessors( qw( line col msg msgid explanation ) );
+__PACKAGE__->mk_accessors( qw( line col msg msgid explanation source ) );
 
 1;
 
