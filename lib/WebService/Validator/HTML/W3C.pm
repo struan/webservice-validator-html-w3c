@@ -269,6 +269,12 @@ Returns the number of errors that the validator encountered.
 
 Synonym for num_errors. There to match CSS Validator interface.
 
+=head2 warningcount 
+
+    $num_errors = $v->warningcount();
+
+Returns the number of warnings that the validator encountered.
+
 =head2 errors
 
     $errors = $v->errors();
@@ -292,8 +298,6 @@ If there was a problem processing the detailed information then this method
 will return 0.
 
 =head2 warnings
-
-ONLY available with the SOAP output from the development Validator at the moment.
 
     $warnings = $v->warnings();
 
@@ -351,8 +355,11 @@ sub errors {
                           msg           => $xp->find( './m:message', $msg )->get_node(1)->getChildNode(1)->getValue,
                           msgid         => $xp->find( './m:messageid', $msg )->get_node(1)->getChildNode(1)->getValue,
                           explanation   => $xp->find( './m:explanation', $msg )->get_node(1)->getChildNode(1)->getValue,
-                          source        => $xp->find( './m:source', $msg )->get_node(1)->getChildNode(1)->getValue,
                       });
+                  
+            if ( $xp->find( './m:source' ) ) {
+                $err->source( $xp->find( './m:source', $msg )->get_node(1)->getChildNode(1)->getValue );
+            }
 
             push @errs, $err;
         }
@@ -410,8 +417,13 @@ sub warnings {
                           line   => $line,
                           col    => $col,
                           msg    => $xp->find( './m:message', $msg )->get_node(1)->getChildNode(1)->getValue,
-                          source => $xp->find( './m:source', $msg )->get_node(1)->getChildNode(1)->getValue,
                       });
+
+            # we may not get a source element if, e.g the only error is a
+            # missing doctype so check first
+            if ( $xp->find( './m:source' ) ) {
+                $warning->source( $xp->find( './m:source', $msg )->get_node(1)->getChildNode(1)->getValue );
+            }
 
             push @warnings, $warning;
         }

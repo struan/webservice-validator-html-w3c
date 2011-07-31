@@ -68,6 +68,7 @@ SKIP: {
             </div>
                               ]]>
                             </m:explanation>
+                            <m:source><![CDATA[&#60;/body<strong title="Position where error was detected.">&#62;</strong>]]></m:source>
 						</m:error>
 			        </m:errorlist>
 			    </m:errors>
@@ -91,6 +92,6 @@ SKIP: {
     like($err->msg, qr/end tag for "div" omitted, but OMITTAG NO was specified/,
                     'Correct message');
     like($err->explanation, qr/You may have neglected to close an element, or perhaps you meant to/,
-                    'Correct exmplanation');
+                    'Correct explanation');
     
 }
