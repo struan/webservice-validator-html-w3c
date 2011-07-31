@@ -3,7 +3,7 @@
 use Test::More;
 use WebService::Validator::HTML::W3C;
 
-my $test_num = 5;
+my $test_num = 9;
 
 if ( $ENV{ 'TEST_AUTHOR' } ) {
 	 $test_num = 6;
@@ -54,9 +54,14 @@ SKIP: {
 			        </m:errorlist>
 			    </m:errors>
 			    <m:warnings>
-			        <m:warningcount>1</m:warningcount>
+			        <m:warningcount>2</m:warningcount>
 			        <m:warninglist>
 			  			<m:warning><m:message>No DOCTYPE found! Attempting validation with XHTML 1.0</m:message></m:warning>
+			  			<m:warning>
+                            <m:line></m:line>
+                            <m:col></m:col>
+                            <m:message>No DOCTYPE found! Attempting validation with XHTML 1.0</m:message>
+                            </m:warning>
 			        </m:warninglist>
 			    </m:warnings>
 			</m:markupvalidationresponse>
@@ -71,5 +76,12 @@ SKIP: {
     is($err->col, undef, 'Correct column');
     like($err->msg, qr/No DOCTYPE found! Attempting validation with XHTML 1.0/,
                     'Correct message');
-    
+
+    $err = $v->warnings->[1];
+    isa_ok($err, 'WebService::Validator::HTML::W3C::Warning');
+    is($err->line, undef, 'Correct line number');
+    is($err->col, undef, 'Correct column');
+    like($err->msg, qr/No DOCTYPE found! Attempting validation with XHTML 1.0/,
+                    'Correct message');
+
 }
