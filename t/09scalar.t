@@ -66,5 +66,5 @@ SKIP: {
 
     ok($r, 'validated invalid scalar');
     ok(!$v->is_valid(), 'invalid scalar is invalid');
-    is( $v->num_errors(), 4, 'correct number of errors');
+    is( $v->num_errors(), 1, 'correct number of errors');
 }

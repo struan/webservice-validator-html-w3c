@@ -7,10 +7,12 @@ use HTTP::Response;
 my $v = WebService::Validator::HTML::W3C->new( );
 
 ok ($v, 'object created');
+my $err_count = 4;
 
 if ( $ENV{ 'TEST_AUTHOR' } ) {
 	my $r = $v->validate('http://exo.org.uk/code/www-w3c-validator/invalid.html');
 
+    $err_count = 1;
 	unless ($r) {
 	    if ($v->validator_error eq "Could not contact validator")
 	    {
@@ -39,4 +41,4 @@ END
 }
 
 ok (!$v->is_valid, 'page is not valid');
-is ($v->num_errors, 4, 'correct number of errors');
+is ($v->num_errors, $err_count, 'correct number of errors');

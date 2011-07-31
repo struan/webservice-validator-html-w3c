@@ -28,7 +28,7 @@ Content-Type: text/html; charset=utf-8
 Client-Date: Sun, 05 Aug 2007 14:36:53 GMT
 Client-Peer: 133.27.228.132:80
 Client-Response-Num: 1
-X-W3C-Validator-Errors: 4
+X-W3C-Validator-Errors: 1
 X-W3C-Validator-Recursion: 1
 X-W3C-Validator-Status: Invalid
 END
@@ -39,7 +39,7 @@ END
 }
 
 ok (!$v->is_valid, 'page is not valid');
-is ($v->errorcount, 4, 'correct number of errors');
+is ($v->errorcount, 1, 'correct number of errors');
 
 SKIP: {
     skip "TEST_AUTHOR environment variable not defined", 4 unless $ENV{ 'TEST_AUTHOR' };
