@@ -1,3 +1,7 @@
+0.26 Sunday 31st July 2011
+ - include patch to use source and explanation from SOAP output <chimo@chromic.org>
+ - small fixes to author tests
+
 0.26 Monday 7th September 2009
  - Suppress and test warning in no XML::XPath installed RT #47960
 
