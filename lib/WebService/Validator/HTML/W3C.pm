@@ -143,7 +143,7 @@ Validate a scalar containing HTML.
 
 =head2 Alternate interface
 
-You can also pass a hash in to specify what you wish to validate. This is provided to ensure compatability with the CSS validator module.
+You can also pass a hash in to specify what you wish to validate. This is provided to ensure compatibility with the CSS validator module.
 
 	$v->validate( uri => 'http://example.com/' );
 	$v->validate( string => $markup );
