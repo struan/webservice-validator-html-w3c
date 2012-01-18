@@ -1,6 +1,6 @@
 # $Id$
 
-use Test::More tests => 7;
+use Test::More tests => 9;
 use WebService::Validator::HTML::W3C;
 use HTTP::Response;
 
@@ -80,3 +80,6 @@ SKIP: {
     ok($r, 'validated valid file');
     ok($v->is_valid(), 'valid file is valid');
 }
+
+ok( !$v->validate( wrong => 'wrong' ), 'returns false is pass in wrong arguments');
+is( $v->validator_error, 'You need to provide a uri, string or file to validate', 'correct error about wrong arguments' );
