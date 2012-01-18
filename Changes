@@ -1,4 +1,8 @@
-0.26 Sunday 31st July 2011
+0.28 Wednesday 18th January 2012
+ - Fix RT #74123
+ - Fix RT #69998
+
+0.27 Sunday 31st July 2011
  - include patch to use source and explanation from SOAP output <chimo@chromic.org>
  - small fixes to author tests
 
