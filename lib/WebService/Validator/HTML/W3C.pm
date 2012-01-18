@@ -185,7 +185,7 @@ sub validate {
 		} elsif( $opts{ 'file' } ) {
 			return $self->validate_file( $opts{ 'file' } );
 		} else {
-			return self->validator_error( "You need to provide a uri, string or file to validate" );
+			return $self->validator_error( "You need to provide a uri, string or file to validate" );
 		}
 	} else {
 	    $uri = shift;		
