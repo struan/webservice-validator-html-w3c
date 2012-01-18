@@ -631,8 +631,8 @@ TEST_AUTHOR.
 That said I'm very happy to hear about bugs. All the more so if they come
 with patches ;).
 
-Please use http://rt.cpan.org/ for filing bug reports, and indeed feature
-requests.
+Please use L<http://rt.cpan.org/> for filing bug reports, and indeed feature
+requests. The code can also be found on L<github|https://github.com/struan/webservice-validator-html-w3c>.
 
 =head1 THANKS
 
@@ -647,7 +647,7 @@ Matt Ryder provided a patch for support of the explanations in the SOAP output.
 
 =head1 SUPPORT
 
-author email or via http://rt.cpan.org/.
+author email or via L<http://rt.cpan.org/>.
 
 =head1 AUTHOR
 
