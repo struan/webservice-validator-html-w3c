@@ -325,6 +325,7 @@ sub errors {
         return undef;
     }
 
+    local $XML::XPath::SafeMode = 1; # avoid memory leaks
     my $xp       = XML::XPath->new( xml => $self->_content() );
 
     if ( $self->_output eq 'xml' ) {
@@ -364,6 +365,8 @@ sub errors {
             push @errs, $err;
         }
     }
+
+    $xp->cleanup;
 
     return \@errs;
 }
